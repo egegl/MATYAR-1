@@ -5480,7 +5480,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 23ae3b7e39d961e4bbe9d6335c7d7f90, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_circlePrefab: {fileID: 1114953654095946522, guid: 89b9656535c41a44fab9b9a6dcb6b2f8, type: 3}
+  circlePrefab: {fileID: 1114953654095946522, guid: 89b9656535c41a44fab9b9a6dcb6b2f8, type: 3}
 --- !u!225 &229925771
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -24137,7 +24137,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 23ae3b7e39d961e4bbe9d6335c7d7f90, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_circlePrefab: {fileID: 1114953654095946522, guid: 89b9656535c41a44fab9b9a6dcb6b2f8, type: 3}
+  circlePrefab: {fileID: 1114953654095946522, guid: 89b9656535c41a44fab9b9a6dcb6b2f8, type: 3}
 --- !u!225 &1709842918
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -25624,11 +25624,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a24b70cab87f712488df99b2d620a36f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_firstNumText: {fileID: 1830149080}
-  m_secondNumText: {fileID: 971290389}
-  m_checkButton: {fileID: 620221345}
-  m_endGame: {fileID: 2021999816}
-  m_winPanel: {fileID: 1781845383}
+  firstNumText: {fileID: 1830149080}
+  secondNumText: {fileID: 971290389}
+  checkButton: {fileID: 620221345}
+  endgame: {fileID: 2021999816}
+  winPanel: {fileID: 1781845383}
 --- !u!1 &2021999816
 GameObject:
   m_ObjectHideFlags: 0
@@ -25640,7 +25640,7 @@ GameObject:
   - component: {fileID: 2021999817}
   - component: {fileID: 2021999818}
   m_Layer: 5
-  m_Name: EndGame
+  m_Name: Endgame
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

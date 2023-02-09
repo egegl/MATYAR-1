@@ -22,7 +22,7 @@ public class LevelManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI firstNumText;
     [SerializeField] private TextMeshProUGUI secondNumText;
     [SerializeField] private GameObject checkButton;
-    [SerializeField] private GameObject endGame;
+    [SerializeField] private GameObject endgame;
     [SerializeField] private GameObject winPanel;
     
     public static LevelManager Instance;
@@ -45,8 +45,8 @@ public class LevelManager : MonoBehaviour
         _secondSlot = GameObject.FindWithTag("Second").GetComponent<ItemSlot>();
         _cbRectTransform = checkButton.GetComponent<RectTransform>();
         _cbImage = checkButton.GetComponent<Image>();
-        _input = endGame.transform.GetChild(0).GetComponent<TMP_InputField>();
-        _tickButton = endGame.transform.GetChild(1).gameObject;
+        _input = endgame.transform.GetChild(0).GetComponent<TMP_InputField>();
+        _tickButton = endgame.transform.GetChild(1).gameObject;
         _tbImage = _tickButton.GetComponent<Image>();
         _tbRectTransform = _tickButton.GetComponent<RectTransform>();
 
@@ -72,7 +72,7 @@ public class LevelManager : MonoBehaviour
         _cbImage.color = Color.white;
 
         // reset endgame
-        endGame.SetActive(false);
+        endgame.SetActive(false);
         _input.text = "";
         _tbImage.color = Color.white;
 
@@ -116,8 +116,8 @@ public class LevelManager : MonoBehaviour
             StartCoroutine(ColorChange(_cbImage, Color.white, Color.green, .5f));
 
             // enable endgame
-            endGame.transform.SetAsLastSibling();
-            endGame.SetActive(true);
+            endgame.transform.SetAsLastSibling();
+            endgame.SetActive(true);
             GameObject.FindGameObjectWithTag("Circ").SetActive(false);
             MoveCirclesToEndgame();
         }
