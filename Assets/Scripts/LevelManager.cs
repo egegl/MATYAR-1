@@ -155,7 +155,7 @@ public class LevelManager : MonoBehaviour
             x += 60;
         }
 
-        if (x == 330)
+        if (x > 330)
         {
             x -= 180;
             y -= 60;
