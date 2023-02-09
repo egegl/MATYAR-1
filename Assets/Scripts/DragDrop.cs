@@ -10,87 +10,35 @@ public class DragDrop : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDrag
     private Image m_image;
     private CanvasGroup m_canvasGroup;
     private RectTransform m_rectTransform;
-    private bool m_inSlot;
     private GameObject m_cross;
     private Vector2 m_currPos;
     private Vector2 m_removedPos;
-    private Vector2 m_firstSlotPos;
-    private ItemSlot m_itemSlot;
-    
-    private static Vector3 StartLocalPos = new(-185f, 40f, 0f);
-    private static Vector3 StartLocalScale = new(1.1f, 1.1f, 1.1f);
+
+    public ItemSlot ItemSlot { private get; set; }
+    public Vector2 FirstSlotPos { private get; set; }
+    public bool InSlot { private get; set; }
 
     private void Awake()
     {
-        m_inSlot = false;
+        InSlot = false;
         m_canvas = GetComponentInParent<Canvas>();
         m_canvasGroup = GetComponent<CanvasGroup>();
         m_rectTransform = GetComponent<RectTransform>();
         m_image = GetComponent<Image>();
         m_cross = transform.GetChild(0).gameObject;
     }
-    
-    // m_inSlot getter setter
-    public bool GetInSlot()
-    {
-        return m_inSlot;
-    }
-    public void SetInSlot(bool newInSlot)
-    {
-        m_inSlot = newInSlot;
-    }
-
-    // m_firstSlotPos getter setter
-    public Vector2 GetFirstSlotPos()
-    {
-        return m_firstSlotPos;
-    }
-    public void SetFirstSlotPos(Vector2 newFirstSlotPos)
-    {
-        m_firstSlotPos = newFirstSlotPos;
-    }
-
-    //m_itemSlot getter setter
-    public ItemSlot GetItemSlot()
-    {
-        return m_itemSlot;
-    }
-    public void SetItemSlot(ItemSlot newItemSlot)
-    {
-        m_itemSlot = newItemSlot;
-    }
-
-    // StartLocalPos getter setter
-    public static Vector2 GetStartLocalPos()
-    {
-        return StartLocalPos;
-    }
-    public static void SetStartLocalPos(Vector2 newStartLocalPos)
-    {
-        StartLocalPos = newStartLocalPos;
-    }
-
-    // StartLocalScale getter setter
-    public static Vector3 GetStartLocalScale()
-    {
-        return StartLocalScale;
-    }
-    public static void SetStartLocalScale(Vector3 newStartLocalScale)
-    {
-        StartLocalScale = newStartLocalScale;
-    }
 
     // cross over the circle on mouse hover if in slot
     public void OnPointerEnter(PointerEventData eventData)
     {
-        if(m_inSlot)
+        if (InSlot)
         {
             m_cross.SetActive(true);
         }
     }
     public void OnPointerExit(PointerEventData eventData)
     {
-        if (m_inSlot)
+        if (InSlot)
         {
             m_cross.SetActive(false);
         }
@@ -99,12 +47,12 @@ public class DragDrop : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDrag
     // remove circle from slot on left click if in slot + update numCircles + set inSlot to false
     public void OnPointerClick(PointerEventData eventData)
     {
-        if(m_inSlot)
+        if (InSlot)
         {
             if (eventData.button == PointerEventData.InputButton.Left)
             {
                 // decrement the number of circles in the slot
-                m_itemSlot.numCircles--;
+                ItemSlot.numCircles--;
 
                 // get current tag and reset circle
                 string tempTag = tag;
@@ -126,8 +74,8 @@ public class DragDrop : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDrag
         m_cross.SetActive(false);
         tag = "Circ";
         m_removedPos = m_rectTransform.position;
-        m_rectTransform.LeanMoveLocal(StartLocalPos, .4f).setEaseInOutQuart();
-        StartCoroutine(ColorChange(m_image.color, Color.white, .2f));
+        m_rectTransform.LeanMoveLocal(LevelManager.Instance.StartLocalPos, .4f).setEaseInOutQuart();
+        StartCoroutine(LevelManager.Instance.ColorChange(m_image, m_image.color, Color.white, .2f));
         
         if(GameObject.FindGameObjectsWithTag(tag).Length > 1)
         {
@@ -148,7 +96,7 @@ public class DragDrop : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDrag
         }
 
         // if circle is on the right side of the slot, move it to the left
-        else if (m_currPos.x > m_firstSlotPos.x)
+        else if (m_currPos.x > FirstSlotPos.x)
         {
             m_rectTransform.LeanMoveLocalX(m_currLocalPos.x - 60, .14f); // .14 is roughly .2 / sqrt(2)
         }
@@ -156,7 +104,7 @@ public class DragDrop : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDrag
         // if circle is on the left side of the slot, move it to the right
         else
         {
-            if(m_currPos.y < m_firstSlotPos.y)
+            if(m_currPos.y < FirstSlotPos.y)
             {
                 m_rectTransform.LeanMoveLocal(new Vector2(m_currLocalPos.x + 60, m_currLocalPos.y + 60), .2f); // roughly .14 * sqrt(2)
             }
@@ -174,7 +122,7 @@ public class DragDrop : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDrag
     // move circle during mouse drag
     public void OnDrag(PointerEventData eventData)
     {
-        if(!m_inSlot)
+        if(!InSlot)
         {
             m_rectTransform.anchoredPosition += eventData.delta / m_canvas.scaleFactor;
         }
@@ -187,21 +135,9 @@ public class DragDrop : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDrag
         m_canvasGroup.alpha = 1;
         
         // reset circle if it's not dropped on a slot
-        if(m_itemSlot == null)
+        if(ItemSlot == null)
         {
             ResetCircle();
-        }
-    }
-
-    // smooth color change
-    public IEnumerator ColorChange(Color from, Color to, float duration)
-    {
-        float t = 0;
-        while (t < duration)
-        {
-            t += Time.deltaTime;
-            m_image.color = Color.Lerp(from, to, (t / duration));
-            yield return null;
         }
     }
 }

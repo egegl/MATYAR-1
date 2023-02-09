@@ -11,39 +11,40 @@ public class LevelManager : MonoBehaviour
     private ItemSlot secondSlot;
     private int firstNum;
     private int secondNum;
-    private RectTransform cbRectTransform;
-    private Vector2 cbStartLocalScale;
     private TMP_InputField input;
+    private Image cbImage;
+    private RectTransform cbRectTransform;
     private GameObject tickButton;
     private Image tbImage;
     private RectTransform tbRectTransform;
-    private Button cbButton;
-    private Image cbImage;
 
-    public static LevelManager instance;
+    public static LevelManager Instance;
+    public Vector3 StartLocalPos { get; private set; } = new(-185f, 40f, 0f);
+    public Vector3 StartLocalScale { get; private set; } = new(1.1f, 1.1f, 1.1f);
+
     public TextMeshProUGUI firstNumText;
     public TextMeshProUGUI secondNumText;
     public GameObject checkButton;
     public GameObject endGame;
     public GameObject winPanel;
+    
 
     private void Awake()
     {
         // singleton
-        if (instance == null)
+        if (Instance == null)
         {
-            instance = this;
+            Instance = this;
         }
         else
         {
             Destroy(gameObject);
         }
+
         firstSlot = GameObject.FindWithTag("First").GetComponent<ItemSlot>();
         secondSlot = GameObject.FindWithTag("Second").GetComponent<ItemSlot>();
         cbRectTransform = checkButton.GetComponent<RectTransform>();
         cbImage = checkButton.GetComponent<Image>();
-        cbButton = checkButton.GetComponent<Button>();
-        cbStartLocalScale = cbRectTransform.localScale;
         input = endGame.transform.GetChild(0).GetComponent<TMP_InputField>();
         tickButton = endGame.transform.GetChild(1).gameObject;
         tbImage = tickButton.GetComponent<Image>();
@@ -56,7 +57,7 @@ public class LevelManager : MonoBehaviour
     public void ResetLevel()
     {
         // reset circles
-        foreach(DragDrop circle in FindObjectsOfType<DragDrop>())
+        foreach (DragDrop circle in FindObjectsOfType<DragDrop>())
         {
             circle.ResetCircle();
         }
@@ -68,9 +69,7 @@ public class LevelManager : MonoBehaviour
         }
 
         // reset check button
-        cbButton.interactable = true;
         cbImage.color = Color.white;
-        //cbRectTransform.localScale = cbStartLocalScale;
 
         // reset endgame
         endGame.SetActive(false);
@@ -87,8 +86,8 @@ public class LevelManager : MonoBehaviour
     public void RandomizeNumbers()
     {
         // assign random integer value (min, max) to firstNum and secondNum - inclusive, exclusive
-        firstNum = (int)Random.Range(1, 11);
-        secondNum = (int)Random.Range(1, 11);
+        firstNum = Random.Range(1, 11);
+        secondNum = Random.Range(1, 11);
 
         // assign numbers to firstNumText and secondNumText
         firstNumText.text = firstNum.ToString();
@@ -101,19 +100,13 @@ public class LevelManager : MonoBehaviour
         if (firstSlot.numCircles != firstNum || secondSlot.numCircles != secondNum)
         {
             // wrong answer visuals
-            StartCoroutine(ColorChange(cbImage, Color.white, Color.red, .25f, 0, true));
+            StartCoroutine(ColorChange(cbImage, Color.white, Color.red, .25f, 0f));
             StartCoroutine(Shake(cbRectTransform, 4, .5f));
         }
         else
         {
             // correct answer visuals
-            StartCoroutine(ColorChange(cbImage, Color.white, Color.green, .5f, 1, false));
-            
-            // disable check button
-            cbButton.interactable = false;
-
-            // remove check button
-            //cbRectTransform.LeanScale(Vector3.zero, .5f).setEaseInOutQuart();
+            StartCoroutine(ColorChange(cbImage, Color.white, Color.green, .5f));
 
             // enable endgame
             endGame.transform.SetAsLastSibling();
@@ -137,7 +130,7 @@ public class LevelManager : MonoBehaviour
             RectTransform cRectTransform = circle.GetComponent<RectTransform>();
             Image cImage = circle.GetComponent<Image>();
             cRectTransform.LeanMoveLocal(new Vector2(x, y), .5f);
-            if(x == 330)
+            if (x == 330)
             {
                 y -= 60;
                 x -= 240;
@@ -148,7 +141,7 @@ public class LevelManager : MonoBehaviour
             }
             if (i % 2 == 0)
             {
-                StartCoroutine(ColorChange(cImage, Color.green, Color.red, .3f, 0, false));
+                StartCoroutine(ColorChange(cImage, Color.green, Color.red, .3f));
             }
             x += 60;
         }
@@ -160,7 +153,7 @@ public class LevelManager : MonoBehaviour
         }
 
         i--;
-        
+
         //move circles in the second slot
         foreach (GameObject circle in GameObject.FindGameObjectsWithTag("CircSecond"))
         {
@@ -173,13 +166,13 @@ public class LevelManager : MonoBehaviour
                 y -= 60;
                 x -= 240;
             }
-            else if(x == 150)
+            else if (x == 150)
             {
                 i--;
             }
             if (i % 2 == 0)
             {
-                StartCoroutine(ColorChange(cImage, Color.red, Color.green, .3f, 0, false));
+                StartCoroutine(ColorChange(cImage, Color.red, Color.green, .3f));
             }
             x += 60;
         }
@@ -188,10 +181,10 @@ public class LevelManager : MonoBehaviour
     // Check endgame answer
     public void CheckEndgame()
     {
-        if(int.TryParse(input.text, out int result) && result == (firstNum + secondNum))
+        if (int.TryParse(input.text, out int result) && result == (firstNum + secondNum))
         {
             // correct answer visuals
-            StartCoroutine(ColorChange(tbImage, Color.white, Color.green, .25f, 0, false));
+            StartCoroutine(ColorChange(tbImage, Color.white, Color.green, .25f));
 
             // win game
             WinGame();
@@ -199,7 +192,7 @@ public class LevelManager : MonoBehaviour
         else
         {
             // wrong answer visuals
-            StartCoroutine(ColorChange(tbImage, Color.white, Color.red, .25f, 0, true));
+            StartCoroutine(ColorChange(tbImage, Color.white, Color.red, .25f, 0f));
             StartCoroutine(Shake(tbRectTransform, 4, .5f));
         }
     }
@@ -208,8 +201,9 @@ public class LevelManager : MonoBehaviour
     {
         winPanel.transform.SetAsLastSibling();
         winPanel.SetActive(true);
+        StartCoroutine(AlphaChange(winPanel.GetComponent<CanvasGroup>(), 0f, 1f, 1f));
     }
-    
+
     // shakes UI element
     private IEnumerator Shake(RectTransform rectTransform, float shakeAmount, float duration)
     {
@@ -228,7 +222,7 @@ public class LevelManager : MonoBehaviour
     }
 
     // color change of UI element
-    public IEnumerator ColorChange(Image image, Color from, Color to, float duration, float waitBetween, bool again)
+    public IEnumerator ColorChange(Image image, Color from, Color to, float duration, float waitBetween)
     {
         float t = 0;
         while (t < duration)
@@ -237,16 +231,37 @@ public class LevelManager : MonoBehaviour
             image.color = Color.Lerp(from, to, (t / duration));
             yield return null;
         }
-        if(again)
+        t = 0;
+        yield return new WaitForSeconds(waitBetween);
+        while (t < duration)
         {
-            t = 0;
-            yield return new WaitForSeconds(waitBetween);
-            while (t < duration)
-            {
-                t += Time.deltaTime;
-                image.color = Color.Lerp(to, from, (t / duration));
-                yield return null;
-            }
+            t += Time.deltaTime;
+            image.color = Color.Lerp(to, from, (t / duration));
+            yield return null;
+        }
+    }
+
+    // override ColorChange if we don't want the color to change back
+    public IEnumerator ColorChange(Image image, Color from, Color to, float duration)
+    {
+        float t = 0;
+        while (t < duration)
+        {
+            t += Time.deltaTime;
+            image.color = Color.Lerp(from, to, (t / duration));
+            yield return null;
+        }
+    }
+
+    // alpha change of UI element
+    public IEnumerator AlphaChange(CanvasGroup canvasGroup, float from, float to, float duration)
+    {
+        float t = 0;
+        while (t < duration)
+        {
+            t += Time.deltaTime;
+            canvasGroup.alpha = Mathf.Lerp(from, to, t / duration);
+            yield return null;
         }
     }
 }
