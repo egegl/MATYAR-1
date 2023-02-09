@@ -3,10 +3,18 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+/**
+ * NOTES:
+ * add fancy scene transition later (A4 paper transition?)
+ * lines for it are commented out
+ */
+
 public class SceneLoader : MonoBehaviour
 {
-    private GameObject _loaderCanvas;
-
+    //private Animator _animator;
+    
+    [SerializeField] private float transitionDuration;
+    
     public static SceneLoader Instance;
 
     private void Awake()
@@ -15,23 +23,26 @@ public class SceneLoader : MonoBehaviour
         if (Instance == null)
         {
             Instance = this;
-            DontDestroyOnLoad(gameObject);
         }
         else
         {
             Destroy(gameObject);
         }
 
-        _loaderCanvas = transform.GetChild(0).gameObject;
+        //_animator = transform.GetChild(0).GetComponent<Animator>();
     }
-
+    
+    // wrapper function for the Load coroutine
+    public void LoadScene(int sceneIndex)
+    {
+        StartCoroutine(Load(sceneIndex));
+    }
+    
     // load scene given the index and duration of the animation
-    public IEnumerator LoadScene(int sceneIndex, float duration)
+    private IEnumerator Load(int sceneIndex)
     {
         //m_animator.SetTrigger("Start");
-        AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(sceneIndex);
-        
-        yield return new WaitForSeconds(duration);
-        
+        yield return new WaitForSeconds(transitionDuration);
+        SceneManager.LoadScene(sceneIndex);
     }
 }
