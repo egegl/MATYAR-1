@@ -16,11 +16,10 @@ public class DragDrop : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDrag
 
     public ItemSlot ItemSlot { private get; set; }
     public Vector2 FirstSlotPos { private get; set; }
-    public bool InSlot { private get; set; }
+    public bool InSlot { private get; set; } = false;
 
     private void Awake()
     {
-        InSlot = false;
         m_canvas = GetComponentInParent<Canvas>();
         m_canvasGroup = GetComponent<CanvasGroup>();
         m_rectTransform = GetComponent<RectTransform>();
@@ -52,7 +51,7 @@ public class DragDrop : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDrag
             if (eventData.button == PointerEventData.InputButton.Left)
             {
                 // decrement the number of circles in the slot
-                ItemSlot.numCircles--;
+                ItemSlot.NumCircles--;
 
                 // get current tag and reset circle
                 string tempTag = tag;
@@ -73,6 +72,7 @@ public class DragDrop : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDrag
     {
         m_cross.SetActive(false);
         tag = "Circ";
+        InSlot = false;
         m_removedPos = m_rectTransform.position;
         m_rectTransform.LeanMoveLocal(LevelManager.Instance.StartLocalPos, .4f).setEaseInOutQuart();
         StartCoroutine(LevelManager.Instance.ColorChange(m_image, m_image.color, Color.white, .2f));
