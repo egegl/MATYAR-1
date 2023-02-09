@@ -25,8 +25,8 @@ public class ItemSlot : MonoBehaviour, IDropHandler
             DragDrop dragDrop = eventData.pointerDrag.GetComponent<DragDrop>();
             if (numCircles < 10)
             {
-                dragDrop.itemSlot = this;
-                dragDrop.firstSlot = rectTransform.GetChild(0).position;
+                dragDrop.SetItemSlot(this);
+                dragDrop.SetFirstSlotPos(rectTransform.GetChild(0).position);
 
                 // make circle's tag same with the slot
                 eventData.pointerDrag.tag = "Circ" + tag;
@@ -46,7 +46,7 @@ public class ItemSlot : MonoBehaviour, IDropHandler
                 }
 
                 // spawn new circle prefab on canvas at the slotted circle's start position
-                SpawnCircle(dragDrop.startPos, dragDrop.startLocalScale);
+                SpawnCircle(DragDrop.GetStartLocalPos(), DragDrop.GetStartLocalScale());
             }
 
             // don't allow more than 10 circles in slot
@@ -66,12 +66,12 @@ public class ItemSlot : MonoBehaviour, IDropHandler
         StartCoroutine(AlphaChange(newCirc.GetComponent<CanvasGroup>(), 0, 1, .3f));
         newCirc.SetActive(true);
     }
-
+    
     // wait for .1 seconds before setting inSlot to true (avoids spamming the X)
     private IEnumerator DragCooldown(DragDrop dragDrop)
     {
         yield return new WaitForSeconds(.1f);
-        dragDrop.inSlot = true;
+        dragDrop.SetInSlot(true);
     }
 
     // change alpha of circle smoothly (fades in & out)

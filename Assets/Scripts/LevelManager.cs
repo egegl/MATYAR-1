@@ -19,7 +19,6 @@ public class LevelManager : MonoBehaviour
     private RectTransform tbRectTransform;
     private Button cbButton;
     private Image cbImage;
-    private GameObject confetti;
 
     public static LevelManager instance;
     public TextMeshProUGUI firstNumText;
@@ -47,7 +46,6 @@ public class LevelManager : MonoBehaviour
         cbStartLocalScale = cbRectTransform.localScale;
         input = endGame.transform.GetChild(0).GetComponent<TMP_InputField>();
         tickButton = endGame.transform.GetChild(1).gameObject;
-        confetti = endGame.transform.GetChild(2).gameObject;
         tbImage = tickButton.GetComponent<Image>();
         tbRectTransform = tickButton.GetComponent<RectTransform>();
 

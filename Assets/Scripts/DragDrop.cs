@@ -6,51 +6,105 @@ using UnityEngine.UI;
 
 public class DragDrop : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHandler, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler
 {
-    private Canvas canvas;
-    private Image image;
-    private CanvasGroup canvasGroup;
-    private RectTransform rectTransform;
-    private GameObject x;
-    private Vector2 currPos;
-    private Vector2 removedPos;
-
-    public bool inSlot;
-    public Vector2 startPos;
-    public Vector2 firstSlot;
-    public Vector3 startLocalScale;
-    public ItemSlot itemSlot;
+    private Canvas m_canvas;
+    private Image m_image;
+    private CanvasGroup m_canvasGroup;
+    private RectTransform m_rectTransform;
+    private bool m_inSlot;
+    private GameObject m_cross;
+    private Vector2 m_currPos;
+    private Vector2 m_removedPos;
+    private Vector2 m_firstSlotPos;
+    private ItemSlot m_itemSlot;
+    
+    private static Vector3 StartLocalPos = new(-185f, 40f, 0f);
+    private static Vector3 StartLocalScale = new(1.1f, 1.1f, 1.1f);
 
     private void Awake()
     {
-        inSlot = false;
-        canvas = GetComponentInParent<Canvas>();
-        canvasGroup = GetComponent<CanvasGroup>();
-        rectTransform = GetComponent<RectTransform>();
-        image = GetComponent<Image>();
-        startPos = rectTransform.localPosition;
-        startLocalScale = rectTransform.localScale;
-        x = this.transform.GetChild(0).gameObject;
+        m_inSlot = false;
+        m_canvas = GetComponentInParent<Canvas>();
+        m_canvasGroup = GetComponent<CanvasGroup>();
+        m_rectTransform = GetComponent<RectTransform>();
+        m_image = GetComponent<Image>();
+        m_cross = transform.GetChild(0).gameObject;
+    }
+    
+    // m_inSlot getter setter
+    public bool GetInSlot()
+    {
+        return m_inSlot;
+    }
+    public void SetInSlot(bool newInSlot)
+    {
+        m_inSlot = newInSlot;
     }
 
-    // Red X on mouse hover if in slot
+    // m_firstSlotPos getter setter
+    public Vector2 GetFirstSlotPos()
+    {
+        return m_firstSlotPos;
+    }
+    public void SetFirstSlotPos(Vector2 newFirstSlotPos)
+    {
+        m_firstSlotPos = newFirstSlotPos;
+    }
+
+    //m_itemSlot getter setter
+    public ItemSlot GetItemSlot()
+    {
+        return m_itemSlot;
+    }
+    public void SetItemSlot(ItemSlot newItemSlot)
+    {
+        m_itemSlot = newItemSlot;
+    }
+
+    // StartLocalPos getter setter
+    public static Vector2 GetStartLocalPos()
+    {
+        return StartLocalPos;
+    }
+    public static void SetStartLocalPos(Vector2 newStartLocalPos)
+    {
+        StartLocalPos = newStartLocalPos;
+    }
+
+    // StartLocalScale getter setter
+    public static Vector3 GetStartLocalScale()
+    {
+        return StartLocalScale;
+    }
+    public static void SetStartLocalScale(Vector3 newStartLocalScale)
+    {
+        StartLocalScale = newStartLocalScale;
+    }
+
+    // cross over the circle on mouse hover if in slot
     public void OnPointerEnter(PointerEventData eventData)
     {
-        if(inSlot)
+        if(m_inSlot)
         {
-            x.SetActive(true);
+            m_cross.SetActive(true);
         }
     }
-    public void OnPointerExit(PointerEventData eventData) => x.SetActive(false);
-
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        if (m_inSlot)
+        {
+            m_cross.SetActive(false);
+        }
+    }
+    
     // remove circle from slot on left click if in slot + update numCircles + set inSlot to false
     public void OnPointerClick(PointerEventData eventData)
     {
-        if(inSlot)
+        if(m_inSlot)
         {
             if (eventData.button == PointerEventData.InputButton.Left)
             {
                 // decrement the number of circles in the slot
-                itemSlot.numCircles--;
+                m_itemSlot.numCircles--;
 
                 // get current tag and reset circle
                 string tempTag = tag;
@@ -60,7 +114,7 @@ public class DragDrop : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDrag
                 foreach (GameObject circle in GameObject.FindGameObjectsWithTag(tempTag))
                 {
                     DragDrop circleDd = circle.GetComponent<DragDrop>();
-                    circleDd.MoveBack(removedPos);
+                    circleDd.MoveBack(m_removedPos);
                 }
             }
         }
@@ -69,13 +123,12 @@ public class DragDrop : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDrag
     // reset circle to original state, then destroy it if number of circles outside of slots (including itself) is greater than 1
     public void ResetCircle()
     {
-        x.SetActive(false);
+        m_cross.SetActive(false);
         tag = "Circ";
-        removedPos = rectTransform.position;
-        rectTransform.LeanMoveLocal(startPos, .4f).setEaseInOutQuart();
-        inSlot = false;
-        StartCoroutine(ColorChange(image.color, Color.white, .2f));
-
+        m_removedPos = m_rectTransform.position;
+        m_rectTransform.LeanMoveLocal(StartLocalPos, .4f).setEaseInOutQuart();
+        StartCoroutine(ColorChange(m_image.color, Color.white, .2f));
+        
         if(GameObject.FindGameObjectsWithTag(tag).Length > 1)
         {
             Destroy(gameObject, .4f);
@@ -85,27 +138,27 @@ public class DragDrop : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDrag
     // rearrange circles in slot
     public void MoveBack(Vector2 otherRemovedPos)
     {
-        currPos = rectTransform.position; // not local position
-        Vector2 currPosLocal = rectTransform.localPosition;
+        m_currPos = m_rectTransform.position; // not local position
+        Vector2 m_currLocalPos = m_rectTransform.localPosition;
         
         // if removed circle is below current circle OR if removed circle is on the same row but to the right of current circle, don't move
-        if (currPos.y > otherRemovedPos.y || (currPos.y == otherRemovedPos.y && currPos.x < otherRemovedPos.x))
+        if (m_currPos.y > otherRemovedPos.y || (m_currPos.y == otherRemovedPos.y && m_currPos.x < otherRemovedPos.x))
         {
             return;
         }
 
         // if circle is on the right side of the slot, move it to the left
-        else if (currPos.x > firstSlot.x)
+        else if (m_currPos.x > m_firstSlotPos.x)
         {
-            rectTransform.LeanMoveLocal(new Vector2(currPosLocal.x - 60, currPosLocal.y), .14f); // .14 is roughly .2 / sqrt(2)
+            m_rectTransform.LeanMoveLocalX(m_currLocalPos.x - 60, .14f); // .14 is roughly .2 / sqrt(2)
         }
 
         // if circle is on the left side of the slot, move it to the right
         else
         {
-            if(currPos.y < firstSlot.y)
+            if(m_currPos.y < m_firstSlotPos.y)
             {
-                rectTransform.LeanMoveLocal(new Vector2(currPosLocal.x + 60, currPosLocal.y + 60), .2f); // roughly .14 * sqrt(2)
+                m_rectTransform.LeanMoveLocal(new Vector2(m_currLocalPos.x + 60, m_currLocalPos.y + 60), .2f); // roughly .14 * sqrt(2)
             }
         }
     }
@@ -114,27 +167,27 @@ public class DragDrop : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDrag
     public void OnBeginDrag(PointerEventData eventData)
     {
         // allow to interact with the slot below and make translucent
-        canvasGroup.blocksRaycasts = false;
-        canvasGroup.alpha = .6f;
+        m_canvasGroup.blocksRaycasts = false;
+        m_canvasGroup.alpha = .6f;
     }
 
     // move circle during mouse drag
     public void OnDrag(PointerEventData eventData)
     {
-        if(!inSlot)
+        if(!m_inSlot)
         {
-            rectTransform.anchoredPosition += eventData.delta / canvas.scaleFactor;
+            m_rectTransform.anchoredPosition += eventData.delta / m_canvas.scaleFactor;
         }
     }
 
     // end mouse drag
     public void OnEndDrag(PointerEventData eventData)
     {
-        canvasGroup.blocksRaycasts = true;
-        canvasGroup.alpha = 1;
+        m_canvasGroup.blocksRaycasts = true;
+        m_canvasGroup.alpha = 1;
         
         // reset circle if it's not dropped on a slot
-        if(itemSlot == null)
+        if(m_itemSlot == null)
         {
             ResetCircle();
         }
@@ -147,7 +200,7 @@ public class DragDrop : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDrag
         while (t < duration)
         {
             t += Time.deltaTime;
-            image.color = Color.Lerp(from, to, (t / duration));
+            m_image.color = Color.Lerp(from, to, (t / duration));
             yield return null;
         }
     }
