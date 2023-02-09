@@ -73,7 +73,7 @@ public class ItemSlot : MonoBehaviour, IDropHandler
     // wait before setting inSlot to true (avoids spamming the X)
     private IEnumerator DragCooldown(DragDrop dragDrop)
     {
-        yield return new WaitForSeconds(.15f);
+        yield return new WaitForSeconds(.1f);
         dragDrop.InSlot = true;
     }
 }
