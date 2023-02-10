@@ -7,9 +7,13 @@ using Unity.VisualScripting;
 using UnityEngine.EventSystems;
 using UnityEngine.Serialization;
 
+/**
+ * NOTES:
+ * specified methods will be transferred to the GameManager singleton after it's added
+ */
+
 public class LevelManager : MonoBehaviour
 {
-    
     private int _firstNum;
     private int _secondNum;
     private TMP_InputField _input;
