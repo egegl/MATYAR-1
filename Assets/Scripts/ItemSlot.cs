@@ -49,7 +49,7 @@ public class ItemSlot : MonoBehaviour, IDropHandler
             SpawnCircle();
         }
         else dragDrop.ResetCircle();
-        }
+    }
 
     // spawn new circle prefab on canvas at given position and scale
     public void SpawnCircle()

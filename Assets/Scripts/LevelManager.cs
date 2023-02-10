@@ -65,7 +65,7 @@ public class LevelManager : MonoBehaviour
     }
     
     // reset level state
-    public void ResetLevel()
+    public void ResetLevel(bool randomize)
     {
         // get circles to reset
         for (int j = 1; j < 3; j++)
@@ -99,9 +99,12 @@ public class LevelManager : MonoBehaviour
 
         // reset win panel
         winPanel.SetActive(false);
-
-        // randomize numbers
-        RandomizeNumbers();
+        
+        // show spawn circle
+        DragDrop.SpawnCircle.GetComponent<CanvasGroup>().alpha = 1;
+        
+        // randomize numbers if randomize
+        if (randomize) RandomizeNumbers();
     }
 
     // checks if the number of circles in slots are correct
@@ -122,6 +125,9 @@ public class LevelManager : MonoBehaviour
             endgame.transform.SetAsLastSibling();
             endgame.SetActive(true);
             MoveCirclesToEndgame();
+            
+            // hide spawn circle
+            StartCoroutine(AlphaChange(DragDrop.SpawnCircle.GetComponent<CanvasGroup>(), 1f, 0f, .2f));
         }
     }
 
@@ -168,8 +174,8 @@ public class LevelManager : MonoBehaviour
                 }
                 i++;
                 
-                if (i % 2 == 0) StartCoroutine(ColorChange(cImage, Color.green, Color.red, .3f));
-                else StartCoroutine(ColorChange(cImage, Color.red, Color.green, .3f));
+                if (i % 2 == 0) StartCoroutine(ColorChange(cImage, Color.red, Color.green, .3f));
+                else StartCoroutine(ColorChange(cImage, Color.green, Color.red, .3f));
                 
                 x += 60;
             }
