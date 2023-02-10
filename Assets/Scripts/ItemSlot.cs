@@ -8,14 +8,18 @@ using UnityEngine.UI;
 public class ItemSlot : MonoBehaviour, IDropHandler
 {
     private RectTransform _rectTransform;
-    
+    private int _index;
+
     [SerializeField] private GameObject circlePrefab;
 
     public int NumCircles { get; set; }
 
-    public void Awake()
+    private void Start()
     {
         _rectTransform = GetComponent<RectTransform>();
+
+        if (name.Equals("FirstSlot")) _index = 1;
+        else _index = 2;
     }
 
     //Add circle to slot on drop
@@ -30,50 +34,31 @@ public class ItemSlot : MonoBehaviour, IDropHandler
         // don't allow more than 10 circles in slot
         if (NumCircles < 10)
         {
-            dragDrop.ItemSlot = this;
-            dragDrop.FirstSlotPos = _rectTransform.GetChild(0).position;
-
-            // make circle's tag same with the slot
-            circle.tag = "Circ" + tag;
+            // update circle's slot
+            dragDrop.ChangeSlot(this, _rectTransform.GetChild(0).position, _index);
 
             // move circle to slot, start drag cooldown and increment NumCircles
             circle.GetComponent<RectTransform>().LeanMoveLocal(_rectTransform.localPosition + _rectTransform.GetChild(NumCircles).gameObject.GetComponent<RectTransform>().localPosition, .2f).setEaseInOutQuart();
-            StartCoroutine(DragCooldown(dragDrop));
             NumCircles++;
 
             // change color of circle according to slot
-            if (CompareTag("First"))
-            {
-                StartCoroutine(LevelManager.Instance.ColorChange(image, Color.white, Color.green, .1f));
-            }
-            else
-            {
-                StartCoroutine(LevelManager.Instance.ColorChange(image, Color.white, Color.red, .1f));
-            }
+            if (_index == 1) StartCoroutine(LevelManager.Instance.ColorChange(image, Color.white, Color.green, .1f));
+            else StartCoroutine(LevelManager.Instance.ColorChange(image, Color.white, Color.red, .1f));
 
             // spawn new circle prefab on canvas at the slotted circle's start position
-            SpawnCircle(LevelManager.Instance.StartLocalPos, LevelManager.Instance.StartLocalScale);
+            SpawnCircle();
         }
-        else
-        {
-            dragDrop.ResetCircle();
-        }
+        else dragDrop.ResetCircle();
     }
 
     // spawn new circle prefab on canvas at given position and scale
-    public void SpawnCircle(Vector2 startLocalPos, Vector3 startLocalScale)
+    public void SpawnCircle()
     {
-        GameObject circle = Instantiate(circlePrefab, startLocalPos, Quaternion.identity);
-        circle.transform.SetParent(transform.parent, false);
-        circle.transform.localScale = startLocalScale;
+        int randZ = Random.Range(0, 360);
+        GameObject circle = Instantiate(circlePrefab, transform.parent, false);
+        circle.transform.Rotate(0f, 0f, randZ);
+        circle.transform.GetChild(0).Rotate(0f, 0f, -randZ);
         StartCoroutine(LevelManager.Instance.AlphaChange(circle.GetComponent<CanvasGroup>(), 0f, 1f, .3f));
         circle.SetActive(true);
-    }
-    
-    // wait before setting inSlot to true (avoids spamming the X)
-    private static IEnumerator DragCooldown(DragDrop dragDrop)
-    {
-        yield return new WaitForSeconds(.1f);
-        dragDrop.InSlot = true;
     }
 }
