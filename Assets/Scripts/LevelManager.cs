@@ -18,7 +18,7 @@ public class LevelManager : MonoBehaviour
     private GameObject _tickButton;
     private Image _tbImage;
     private RectTransform _tbRectTransform;
-    private List<DragDrop> _circlesToHandle = new List<DragDrop>();
+    private readonly List<DragDrop> _circlesToHandle = new List<DragDrop>();
 
     [SerializeField] private ItemSlot firstSlot;
     [SerializeField] private ItemSlot secondSlot;
@@ -51,7 +51,19 @@ public class LevelManager : MonoBehaviour
 
         RandomizeNumbers();
     }
+    
+    // randomizes numbers   
+    private void RandomizeNumbers()
+    {
+        // assign random integer value (min, max) to firstNum and secondNum - inclusive, exclusive
+        _firstNum = Random.Range(1, 11);
+        _secondNum = Random.Range(1, 11);
 
+        // assign numbers to firstNumText and secondNumText
+        firstNumText.text = _firstNum.ToString();
+        secondNumText.text = _secondNum.ToString();
+    }
+    
     // reset level state
     public void ResetLevel()
     {
@@ -90,18 +102,6 @@ public class LevelManager : MonoBehaviour
 
         // randomize numbers
         RandomizeNumbers();
-    }
-
-    // randomizes numbers   
-    public void RandomizeNumbers()
-    {
-        // assign random integer value (min, max) to firstNum and secondNum - inclusive, exclusive
-        _firstNum = Random.Range(1, 11);
-        _secondNum = Random.Range(1, 11);
-
-        // assign numbers to firstNumText and secondNumText
-        firstNumText.text = _firstNum.ToString();
-        secondNumText.text = _secondNum.ToString();
     }
 
     // checks if the number of circles in slots are correct
