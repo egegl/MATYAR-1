@@ -2,76 +2,76 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class ItemSlot : MonoBehaviour, IDropHandler
 {
-    private RectTransform m_rectTransform;
+    private RectTransform _rectTransform;
     
-    [SerializeField] private GameObject m_circlePrefab;
+    [SerializeField] private GameObject circlePrefab;
 
-    public int NumCircles { get; set; } = 0;
+    public int NumCircles { get; set; }
 
     public void Awake()
     {
-        m_rectTransform = GetComponent<RectTransform>();
+        _rectTransform = GetComponent<RectTransform>();
     }
 
     //Add circle to slot on drop
     public void OnDrop(PointerEventData eventData)
     {
-        if (eventData.pointerDrag != null)
+        if (eventData.pointerDrag == null) return;
+        
+        GameObject circle = eventData.pointerDrag;
+        DragDrop dragDrop = circle.GetComponent<DragDrop>();
+        Image image = circle.GetComponent<Image>();
+
+        // don't allow more than 10 circles in slot
+        if (NumCircles < 10)
         {
-            GameObject m_circle = eventData.pointerDrag;
-            DragDrop m_dragDrop = m_circle.GetComponent<DragDrop>();
-            Image m_image = m_circle.GetComponent<Image>();
+            dragDrop.ItemSlot = this;
+            dragDrop.FirstSlotPos = _rectTransform.GetChild(0).position;
 
-            // don't allow more than 10 circles in slot
-            if (NumCircles < 10)
+            // make circle's tag same with the slot
+            circle.tag = "Circ" + tag;
+
+            // move circle to slot, start drag cooldown and increment NumCircles
+            circle.GetComponent<RectTransform>().LeanMoveLocal(_rectTransform.localPosition + _rectTransform.GetChild(NumCircles).gameObject.GetComponent<RectTransform>().localPosition, .2f).setEaseInOutQuart();
+            StartCoroutine(DragCooldown(dragDrop));
+            NumCircles++;
+
+            // change color of circle according to slot
+            if (CompareTag("First"))
             {
-                m_dragDrop.ItemSlot = this;
-                m_dragDrop.FirstSlotPos = m_rectTransform.GetChild(0).position;
-
-                // make circle's tag same with the slot
-                m_circle.tag = "Circ" + tag;
-
-                // move circle to slot, start drag cooldown and increment NumCircles
-                m_circle.GetComponent<RectTransform>().LeanMoveLocal(m_rectTransform.localPosition + m_rectTransform.GetChild(NumCircles).gameObject.GetComponent<RectTransform>().localPosition, .2f).setEaseInOutQuart();
-                StartCoroutine(DragCooldown(m_dragDrop));
-                NumCircles++;
-
-                // change color of circle according to slot
-                if (CompareTag("First"))
-                {
-                    StartCoroutine(LevelManager.Instance.ColorChange(m_image, Color.white, Color.green, .1f));
-                }
-                else
-                {
-                    StartCoroutine(LevelManager.Instance.ColorChange(m_image, Color.white, Color.red, .1f));
-                }
-
-                // spawn new circle prefab on canvas at the slotted circle's start position
-                SpawnCircle(LevelManager.Instance.StartLocalPos, LevelManager.Instance.StartLocalScale);
+                StartCoroutine(LevelManager.Instance.ColorChange(image, Color.white, Color.green, .1f));
             }
             else
             {
-                m_dragDrop.ResetCircle();
+                StartCoroutine(LevelManager.Instance.ColorChange(image, Color.white, Color.red, .1f));
             }
+
+            // spawn new circle prefab on canvas at the slotted circle's start position
+            SpawnCircle(LevelManager.Instance.StartLocalPos, LevelManager.Instance.StartLocalScale);
+        }
+        else
+        {
+            dragDrop.ResetCircle();
         }
     }
 
     // spawn new circle prefab on canvas at given position and scale
     public void SpawnCircle(Vector2 startLocalPos, Vector3 startLocalScale)
     {
-        GameObject m_circle = Instantiate(m_circlePrefab, startLocalPos, Quaternion.identity);
-        m_circle.transform.SetParent(transform.parent, false);
-        m_circle.transform.localScale = startLocalScale;
-        StartCoroutine(LevelManager.Instance.AlphaChange(m_circle.GetComponent<CanvasGroup>(), 0f, 1f, .3f));
-        m_circle.SetActive(true);
+        GameObject circle = Instantiate(circlePrefab, startLocalPos, Quaternion.identity);
+        circle.transform.SetParent(transform.parent, false);
+        circle.transform.localScale = startLocalScale;
+        StartCoroutine(LevelManager.Instance.AlphaChange(circle.GetComponent<CanvasGroup>(), 0f, 1f, .3f));
+        circle.SetActive(true);
     }
     
     // wait before setting inSlot to true (avoids spamming the X)
-    private IEnumerator DragCooldown(DragDrop dragDrop)
+    private static IEnumerator DragCooldown(DragDrop dragDrop)
     {
         yield return new WaitForSeconds(.1f);
         dragDrop.InSlot = true;

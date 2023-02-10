@@ -4,29 +4,30 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using UnityEngine.EventSystems;
+using UnityEngine.Serialization;
 
 public class LevelManager : MonoBehaviour
 {
-    private ItemSlot m_firstSlot;
-    private ItemSlot m_secondSlot;
-    private int m_firstNum;
-    private int m_secondNum;
-    private TMP_InputField m_input;
-    private Image m_cbImage;
-    private RectTransform m_cbRectTransform;
-    private GameObject m_tickButton;
-    private Image m_tbImage;
-    private RectTransform m_tbRectTransform;
+    private ItemSlot _firstSlot;
+    private ItemSlot _secondSlot;
+    private int _firstNum;
+    private int _secondNum;
+    private TMP_InputField _input;
+    private Image _cbImage;
+    private RectTransform _cbRectTransform;
+    private GameObject _tickButton;
+    private Image _tbImage;
+    private RectTransform _tbRectTransform;
     
-    [SerializeField] private TextMeshProUGUI m_firstNumText;
-    [SerializeField] private TextMeshProUGUI m_secondNumText;
-    [SerializeField] private GameObject m_checkButton;
-    [SerializeField] private GameObject m_endGame;
-    [SerializeField] private GameObject m_winPanel;
+    [SerializeField] private TextMeshProUGUI firstNumText;
+    [SerializeField] private TextMeshProUGUI secondNumText;
+    [SerializeField] private GameObject checkButton;
+    [SerializeField] private GameObject endgame;
+    [SerializeField] private GameObject winPanel;
     
     public static LevelManager Instance;
-    public Vector3 StartLocalPos { get; private set; } = new(-185f, 40f, 0f);
-    public Vector3 StartLocalScale { get; private set; } = new(1.1f, 1.1f, 1.1f);
+    public Vector3 StartLocalPos { get; } = new(-185f, 40f, 0f);
+    public Vector3 StartLocalScale { get; } = new(1.1f, 1.1f, 1.1f);
 
     private void Awake()
     {
@@ -40,14 +41,14 @@ public class LevelManager : MonoBehaviour
             Destroy(gameObject);
         }
 
-        m_firstSlot = GameObject.FindWithTag("First").GetComponent<ItemSlot>();
-        m_secondSlot = GameObject.FindWithTag("Second").GetComponent<ItemSlot>();
-        m_cbRectTransform = m_checkButton.GetComponent<RectTransform>();
-        m_cbImage = m_checkButton.GetComponent<Image>();
-        m_input = m_endGame.transform.GetChild(0).GetComponent<TMP_InputField>();
-        m_tickButton = m_endGame.transform.GetChild(1).gameObject;
-        m_tbImage = m_tickButton.GetComponent<Image>();
-        m_tbRectTransform = m_tickButton.GetComponent<RectTransform>();
+        _firstSlot = GameObject.FindWithTag("First").GetComponent<ItemSlot>();
+        _secondSlot = GameObject.FindWithTag("Second").GetComponent<ItemSlot>();
+        _cbRectTransform = checkButton.GetComponent<RectTransform>();
+        _cbImage = checkButton.GetComponent<Image>();
+        _input = endgame.transform.GetChild(0).GetComponent<TMP_InputField>();
+        _tickButton = endgame.transform.GetChild(1).gameObject;
+        _tbImage = _tickButton.GetComponent<Image>();
+        _tbRectTransform = _tickButton.GetComponent<RectTransform>();
 
         RandomizeNumbers();
     }
@@ -68,15 +69,15 @@ public class LevelManager : MonoBehaviour
         }
 
         // reset check button
-        m_cbImage.color = Color.white;
+        _cbImage.color = Color.white;
 
         // reset endgame
-        m_endGame.SetActive(false);
-        m_input.text = "";
-        m_tbImage.color = Color.white;
+        endgame.SetActive(false);
+        _input.text = "";
+        _tbImage.color = Color.white;
 
         // reset win panel
-        m_winPanel.SetActive(false);
+        winPanel.SetActive(false);
 
         // randomize numbers
         RandomizeNumbers();
@@ -84,7 +85,7 @@ public class LevelManager : MonoBehaviour
         // spawn circle if no circle is left
         if (GameObject.FindGameObjectWithTag("Circ") == null)
         {
-            m_firstSlot.SpawnCircle(StartLocalPos, StartLocalScale);
+            _firstSlot.SpawnCircle(StartLocalPos, StartLocalScale);
         }
     }
 
@@ -92,31 +93,31 @@ public class LevelManager : MonoBehaviour
     public void RandomizeNumbers()
     {
         // assign random integer value (min, max) to firstNum and secondNum - inclusive, exclusive
-        m_firstNum = Random.Range(1, 11);
-        m_secondNum = Random.Range(1, 11);
+        _firstNum = Random.Range(1, 11);
+        _secondNum = Random.Range(1, 11);
 
         // assign numbers to firstNumText and secondNumText
-        m_firstNumText.text = m_firstNum.ToString();
-        m_secondNumText.text = m_secondNum.ToString();
+        firstNumText.text = _firstNum.ToString();
+        secondNumText.text = _secondNum.ToString();
     }
 
     // checks if the number of circles in slots are correct
     public void CheckCircles()
     {
-        if (m_firstSlot.NumCircles != m_firstNum || m_secondSlot.NumCircles != m_secondNum)
+        if (_firstSlot.NumCircles != _firstNum || _secondSlot.NumCircles != _secondNum)
         {
             // wrong answer visuals
-            StartCoroutine(ColorChange(m_cbImage, Color.white, Color.red, .25f, 0f));
-            StartCoroutine(Shake(m_cbRectTransform, 4, .5f));
+            StartCoroutine(ColorChange(_cbImage, Color.white, Color.red, .25f, 0f));
+            StartCoroutine(Shake(_cbRectTransform, 4, .5f));
         }
         else
         {
             // correct answer visuals
-            StartCoroutine(ColorChange(m_cbImage, Color.white, Color.green, .5f));
+            StartCoroutine(ColorChange(_cbImage, Color.white, Color.green, .5f));
 
             // enable endgame
-            m_endGame.transform.SetAsLastSibling();
-            m_endGame.SetActive(true);
+            endgame.transform.SetAsLastSibling();
+            endgame.SetActive(true);
             GameObject.FindGameObjectWithTag("Circ").SetActive(false);
             MoveCirclesToEndgame();
         }
@@ -125,10 +126,10 @@ public class LevelManager : MonoBehaviour
     // check endgame answer
     public void CheckEndgame()
     {
-        if (int.TryParse(m_input.text, out int result) && result == (m_firstNum + m_secondNum))
+        if (int.TryParse(_input.text, out int result) && result == (_firstNum + _secondNum))
         {
             // correct answer visuals
-            StartCoroutine(ColorChange(m_tbImage, Color.white, Color.green, .25f));
+            StartCoroutine(ColorChange(_tbImage, Color.white, Color.green, .25f));
 
             // win game
             WinGame();
@@ -136,8 +137,8 @@ public class LevelManager : MonoBehaviour
         else
         {
             // wrong answer visuals
-            StartCoroutine(ColorChange(m_tbImage, Color.white, Color.red, .25f, 0f));
-            StartCoroutine(Shake(m_tbRectTransform, 4, .5f));
+            StartCoroutine(ColorChange(_tbImage, Color.white, Color.red, .25f, 0f));
+            StartCoroutine(Shake(_tbRectTransform, 4, .5f));
         }
     }
     
@@ -155,14 +156,15 @@ public class LevelManager : MonoBehaviour
             RectTransform cRectTransform = circle.GetComponent<RectTransform>();
             Image cImage = circle.GetComponent<Image>();
             cRectTransform.LeanMoveLocal(new Vector2(x, y), .5f);
-            if (x == 150)
+            switch (x)
             {
-                i--;
-            }
-            else if (x == 330)
-            {
-                y -= 60;
-                x -= 240;
+                case 150:
+                    i--;
+                    break;
+                case 330:
+                    y -= 60;
+                    x -= 240;
+                    break;
             }
             if (i % 2 == 0)
             {
@@ -183,21 +185,22 @@ public class LevelManager : MonoBehaviour
         foreach (GameObject circle in GameObject.FindGameObjectsWithTag("CircSecond"))
         {
             i++;
-            RectTransform m_cRectTransform = circle.GetComponent<RectTransform>();
-            Image m_cImage = circle.GetComponent<Image>();
-            m_cRectTransform.LeanMoveLocal(new Vector2(x, y), .5f);
-            if (x == 150)
+            RectTransform cRectTransform = circle.GetComponent<RectTransform>();
+            Image cImage = circle.GetComponent<Image>();
+            cRectTransform.LeanMoveLocal(new Vector2(x, y), .5f);
+            switch (x)
             {
-                i--;
-            }
-            else if (x == 330)
-            {
-                y -= 60;
-                x -= 240;
+                case 150:
+                    i--;
+                    break;
+                case 330:
+                    y -= 60;
+                    x -= 240;
+                    break;
             }
             if (i % 2 == 0)
             {
-                StartCoroutine(ColorChange(m_cImage, Color.red, Color.green, .3f));
+                StartCoroutine(ColorChange(cImage, Color.red, Color.green, .3f));
             }
             x += 60;
         }
@@ -206,23 +209,27 @@ public class LevelManager : MonoBehaviour
     // activate win panel
     private void WinGame()
     {
-        m_winPanel.transform.SetAsLastSibling();
-        m_winPanel.SetActive(true);
-        StartCoroutine(AlphaChange(m_winPanel.GetComponent<CanvasGroup>(), 0f, 1f, 1f));
+        winPanel.transform.SetAsLastSibling();
+        winPanel.SetActive(true);
+        StartCoroutine(AlphaChange(winPanel.GetComponent<CanvasGroup>(), 0f, 1f, 1f));
     }
+
+    /**
+    ALL FUNCTIONS BELOW WILL BE MOVED TO A GameManager SCRIPT!
+    **/
 
     // shake UI element
     private IEnumerator Shake(RectTransform rectTransform, float shakeAmount, float duration)
     {
         float t = 0;
-        Vector3 m_StartLocalPos = rectTransform.localPosition;
+        Vector3 startLocalPos = rectTransform.localPosition;
         while (t < duration)
         {
             t += Time.deltaTime;
-            rectTransform.localPosition = Random.insideUnitSphere * shakeAmount + m_StartLocalPos;
+            rectTransform.localPosition = Random.insideUnitSphere * shakeAmount + startLocalPos;
             yield return null;
         }
-        rectTransform.localPosition = m_StartLocalPos;
+        rectTransform.localPosition = startLocalPos;
 
         // unselect UI element
         EventSystem.current.SetSelectedGameObject(null);
