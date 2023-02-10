@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine.EventSystems;
 using UnityEngine.Serialization;
 
 public class LevelManager : MonoBehaviour
 {
-    private ItemSlot _firstSlot;
-    private ItemSlot _secondSlot;
+    
     private int _firstNum;
     private int _secondNum;
     private TMP_InputField _input;
@@ -18,7 +18,10 @@ public class LevelManager : MonoBehaviour
     private GameObject _tickButton;
     private Image _tbImage;
     private RectTransform _tbRectTransform;
-    
+    private List<DragDrop> _circlesToHandle = new List<DragDrop>();
+
+    [SerializeField] private ItemSlot firstSlot;
+    [SerializeField] private ItemSlot secondSlot;
     [SerializeField] private TextMeshProUGUI firstNumText;
     [SerializeField] private TextMeshProUGUI secondNumText;
     [SerializeField] private GameObject checkButton;
@@ -26,9 +29,7 @@ public class LevelManager : MonoBehaviour
     [SerializeField] private GameObject winPanel;
     
     public static LevelManager Instance;
-    public Vector3 StartLocalPos { get; } = new(-185f, 40f, 0f);
-    public Vector3 StartLocalScale { get; } = new(1.1f, 1.1f, 1.1f);
-
+    
     private void Awake()
     {
         // singleton
@@ -41,8 +42,6 @@ public class LevelManager : MonoBehaviour
             Destroy(gameObject);
         }
 
-        _firstSlot = GameObject.FindWithTag("First").GetComponent<ItemSlot>();
-        _secondSlot = GameObject.FindWithTag("Second").GetComponent<ItemSlot>();
         _cbRectTransform = checkButton.GetComponent<RectTransform>();
         _cbImage = checkButton.GetComponent<Image>();
         _input = endgame.transform.GetChild(0).GetComponent<TMP_InputField>();
@@ -56,17 +55,27 @@ public class LevelManager : MonoBehaviour
     // reset level state
     public void ResetLevel()
     {
-        // reset circles
-        foreach (DragDrop circle in FindObjectsOfType<DragDrop>())
+        // get circles to reset
+        for (int j = 1; j < 3; j++)
         {
-            circle.ResetCircle();
+            foreach (GameObject circle in DragDrop.CircDict[j])
+            {
+                _circlesToHandle.Add(circle.GetComponent<DragDrop>());
+            }
         }
+        
+        // reset circles
+        foreach (DragDrop dragDrop in _circlesToHandle)
+        {
+            dragDrop.ResetCircle();
+        }
+        
+        // reset circle list
+        _circlesToHandle.Clear();
 
         // reset slots
-        foreach (ItemSlot itemSlot in FindObjectsOfType<ItemSlot>())
-        {
-            itemSlot.NumCircles = 0;
-        }
+        firstSlot.NumCircles = 0;
+        secondSlot.NumCircles = 0;
 
         // reset check button
         _cbImage.color = Color.white;
@@ -81,12 +90,6 @@ public class LevelManager : MonoBehaviour
 
         // randomize numbers
         RandomizeNumbers();
-
-        // spawn circle if no circle is left
-        if (GameObject.FindGameObjectWithTag("Circ") == null)
-        {
-            _firstSlot.SpawnCircle(StartLocalPos, StartLocalScale);
-        }
     }
 
     // randomizes numbers   
@@ -104,7 +107,7 @@ public class LevelManager : MonoBehaviour
     // checks if the number of circles in slots are correct
     public void CheckCircles()
     {
-        if (_firstSlot.NumCircles != _firstNum || _secondSlot.NumCircles != _secondNum)
+        if ((firstSlot.NumCircles + secondSlot.NumCircles) != (_firstNum + _secondNum))
         {
             // wrong answer visuals
             StartCoroutine(ColorChange(_cbImage, Color.white, Color.red, .25f, 0f));
@@ -118,8 +121,10 @@ public class LevelManager : MonoBehaviour
             // enable endgame
             endgame.transform.SetAsLastSibling();
             endgame.SetActive(true);
-            GameObject.FindGameObjectWithTag("Circ").SetActive(false);
             MoveCirclesToEndgame();
+            
+            // hide the circle on spawn
+            
         }
     }
 
@@ -149,60 +154,33 @@ public class LevelManager : MonoBehaviour
         int x = 150;
         int y = 160;
 
-        // move circles in the first slot
-        foreach (GameObject circle in GameObject.FindGameObjectsWithTag("CircFirst"))
+        for (int j = 1; j < 3; j++)
         {
-            i++;
-            RectTransform cRectTransform = circle.GetComponent<RectTransform>();
-            Image cImage = circle.GetComponent<Image>();
-            cRectTransform.LeanMoveLocal(new Vector2(x, y), .5f);
-            switch (x)
+            foreach (GameObject circle in DragDrop.CircDict[j])
             {
-                case 150:
-                    i--;
-                    break;
-                case 330:
+                RectTransform cRectTransform = circle.GetComponent<RectTransform>();
+                Image cImage = circle.GetComponent<Image>();
+
+                cRectTransform.LeanMoveLocal(new Vector2(x, y), .5f);
+
+                if (x == 150) i--;
+                else if (x == 330)
+                {
                     y -= 60;
                     x -= 240;
-                    break;
+                }
+                i++;
+                
+                if (i % 2 == 0) StartCoroutine(ColorChange(cImage, Color.green, Color.red, .3f));
+                else StartCoroutine(ColorChange(cImage, Color.red, Color.green, .3f));
+                
+                x += 60;
             }
-            if (i % 2 == 0)
+            if (x == 390)
             {
-                StartCoroutine(ColorChange(cImage, Color.green, Color.red, .3f));
+                x -= 180;
+                y -= 60;
             }
-            x += 60;
-        }
-
-        if (x > 330)
-        {
-            x -= 180;
-            y -= 60;
-        }
-
-        i--;
-
-        //move circles in the second slot
-        foreach (GameObject circle in GameObject.FindGameObjectsWithTag("CircSecond"))
-        {
-            i++;
-            RectTransform cRectTransform = circle.GetComponent<RectTransform>();
-            Image cImage = circle.GetComponent<Image>();
-            cRectTransform.LeanMoveLocal(new Vector2(x, y), .5f);
-            switch (x)
-            {
-                case 150:
-                    i--;
-                    break;
-                case 330:
-                    y -= 60;
-                    x -= 240;
-                    break;
-            }
-            if (i % 2 == 0)
-            {
-                StartCoroutine(ColorChange(cImage, Color.red, Color.green, .3f));
-            }
-            x += 60;
         }
     }
 
@@ -222,6 +200,7 @@ public class LevelManager : MonoBehaviour
     private IEnumerator Shake(RectTransform rectTransform, float shakeAmount, float duration)
     {
         float t = 0;
+        
         Vector3 startLocalPos = rectTransform.localPosition;
         while (t < duration)
         {
