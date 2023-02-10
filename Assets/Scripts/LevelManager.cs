@@ -157,7 +157,6 @@ public class LevelManager : MonoBehaviour
     // move all circles in slots to the final slot
     private void MoveCirclesToEndgame()
     {
-        int i = 0;
         int x = 150;
         int y = 160;
 
@@ -169,18 +168,12 @@ public class LevelManager : MonoBehaviour
                 Image cImage = circle.GetComponent<Image>();
 
                 cRectTransform.LeanMoveLocal(new Vector2(x, y), .5f);
-
-                if (x == 150) i--;
-                else if (x == 330)
+                
+                if (x == 330)
                 {
                     y -= 60;
                     x -= 240;
                 }
-                i++;
-                
-                if (i % 2 == 0) StartCoroutine(ColorChange(cImage, Color.red, Color.green, .3f));
-                else StartCoroutine(ColorChange(cImage, Color.green, Color.red, .3f));
-                
                 x += 60;
             }
             if (x == 390)

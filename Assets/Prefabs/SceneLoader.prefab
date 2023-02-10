@@ -187,6 +187,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6595794590778292159}
   - component: {fileID: 6595794590778292158}
+  - component: {fileID: 1843633467636080336}
   m_Layer: 0
   m_Name: SceneLoader
   m_TagString: Untagged
@@ -223,3 +224,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   transitionDuration: 0
+--- !u!114 &1843633467636080336
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6595794590778292156}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c2e1de1f11304704ba26c6e481529e03, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

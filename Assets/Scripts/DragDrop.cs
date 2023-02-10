@@ -99,7 +99,7 @@ public class DragDrop : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDrag
     private IEnumerator ActivateInSlot()
     {
         yield return new WaitForSeconds(.1f);
-        _inSlot = true;
+        yield return _inSlot = true;
     }
 
     // rearrange circles in slot
@@ -109,20 +109,25 @@ public class DragDrop : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDrag
         Vector2 currLocalPos = _rectTransform.localPosition;
         
         // if removed circle is below current circle OR if removed circle is on the same row but to the right of current circle, don't move
-        if (_currPos.y > otherRemovedPos.y || ((int)_currPos.y == (int)otherRemovedPos.y && _currPos.x < otherRemovedPos.x)) return;
-
-        // if circle is on the right side of the slot, move it to the left
-        if (_currPos.x > _firstSlotPos.x)
+        if (_currPos.y > otherRemovedPos.y || (Mathf.Approximately(_currPos.y, otherRemovedPos.y) && Mathf.Approximately(_currPos.x, _firstSlotPos.x))) return;
+        
+        // same y level but move
+        if (Mathf.Approximately(_removedPos.y, _firstSlotPos.y) && Mathf.Approximately(_currPos.y, _firstSlotPos.y))
         {
             _rectTransform.LeanMoveLocalX(currLocalPos.x - 60, .14f); // .14 is roughly .2 / sqrt(2)
         }
-
-        // if circle is on the left side of the slot, move it to the right
+        // below
         else
         {
-            if(_currPos.y < _firstSlotPos.y)
+            // left
+            if (Mathf.Approximately(_currPos.x, _firstSlotPos.x))
             {
-                _rectTransform.LeanMoveLocal(new Vector2(currLocalPos.x + 60, currLocalPos.y + 60), .2f); // roughly .14 * sqrt(2)
+                _rectTransform.LeanMoveLocal(new Vector2(currLocalPos.x + 60, currLocalPos.y + 60), .2f);
+            }
+            // right
+            else
+            {
+                _rectTransform.LeanMoveLocalX(currLocalPos.x - 60, .14f); // .14 is roughly .2 / sqrt(2)
             }
         }
     }

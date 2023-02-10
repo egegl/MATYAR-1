@@ -1,0 +1,22 @@
+fileFormatVersion: 2
+guid: 62df620d3d2ed624fb70e6739d4ac1e6
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontNames:
+  - DK Crayon Crumble
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: ee5a232266dfb9448a07c23c3db40dca, type: 3}
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  shouldRoundAdvanceValue: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
