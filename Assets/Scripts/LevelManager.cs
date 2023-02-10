@@ -122,9 +122,6 @@ public class LevelManager : MonoBehaviour
             endgame.transform.SetAsLastSibling();
             endgame.SetActive(true);
             MoveCirclesToEndgame();
-            
-            // hide the circle on spawn
-            
         }
     }
 
