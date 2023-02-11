@@ -81,8 +81,11 @@ public class DragDrop : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDrag
         _rectTransform.LeanMoveLocal(StartLocalPos, .4f).setEaseInOutQuart();
         StartCoroutine(GameManager.Instance.ColorChange(_image, _image.color, Color.white, .2f));
 
-        CircDict[_slotIndex].Remove(gameObject);
-        Destroy(gameObject, .4f);
+        if (_slotIndex > 0)
+        {
+            CircDict[_slotIndex].Remove(gameObject);
+            Destroy(gameObject, .4f);
+        }
     }
 
     // change slot of the circle

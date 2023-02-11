@@ -22,7 +22,6 @@ public class Level1Manager : MonoBehaviour
     private GameObject _tickButton;
     private Image _tbImage;
     private RectTransform _tbRectTransform;
-    private readonly List<DragDrop> _circlesToHandle = new List<DragDrop>();
 
     [SerializeField] private ItemSlot firstSlot;
     [SerializeField] private ItemSlot secondSlot;
@@ -31,13 +30,13 @@ public class Level1Manager : MonoBehaviour
     [SerializeField] private GameObject checkButton;
     [SerializeField] private GameObject endgame;
     [SerializeField] private GameObject winPanel;
-    
-    public static Level1Manager Instance;
+
+    private static Level1Manager _instance;
     
     private void Awake()
     {
         // singleton
-        Instance = this;
+        _instance = this;
 
         _cbRectTransform = checkButton.GetComponent<RectTransform>();
         _cbImage = checkButton.GetComponent<Image>();
@@ -70,23 +69,11 @@ public class Level1Manager : MonoBehaviour
             return;
         }
 
-        // get circles to reset
-        for (int j = 1; j < 3; j++)
-        {
-            foreach (GameObject circle in DragDrop.CircDict[j])
-            {
-                _circlesToHandle.Add(circle.GetComponent<DragDrop>());
-            }
-        }
-        
-        // reset circles
-        foreach (DragDrop dragDrop in _circlesToHandle)
+        // reset all circles in the scene
+        foreach (DragDrop dragDrop in FindObjectsOfType<DragDrop>())
         {
             dragDrop.ResetCircle();
         }
-        
-        // reset circle list
-        _circlesToHandle.Clear();
 
         // reset slots
         firstSlot.NumCircles = 0;
