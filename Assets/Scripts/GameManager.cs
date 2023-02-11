@@ -75,16 +75,4 @@ public class GameManager : MonoBehaviour
             yield return null;
         }
     }
-
-    // change alpha of UI element
-    public IEnumerator AlphaChange(CanvasGroup canvasGroup, float from, float to, float duration)
-    {
-        float t = 0;
-        while (t < duration)
-        {
-            t += Time.deltaTime;
-            canvasGroup.alpha = Mathf.Lerp(from, to, t / duration);
-            yield return null;
-        }
-    }
 }
