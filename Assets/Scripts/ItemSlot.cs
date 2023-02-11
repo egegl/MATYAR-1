@@ -51,12 +51,11 @@ public class ItemSlot : MonoBehaviour, IDropHandler
     }
 
     // spawn new circle prefab on canvas at given position and scale
-    public void SpawnCircle()
+    private void SpawnCircle()
     {
         int randZ = Random.Range(0, 360);
         GameObject circle = Instantiate(circlePrefab, transform.parent, false);
         circle.transform.Rotate(0f, 0f, randZ);
         circle.transform.GetChild(0).Rotate(0f, 0f, -randZ);
-        StartCoroutine(GameManager.Instance.AlphaChange(circle.GetComponent<CanvasGroup>(), 0f, 1f, .3f));
     }
 }

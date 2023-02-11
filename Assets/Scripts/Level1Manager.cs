@@ -2,11 +2,6 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-/**
- * NOTES:
- * specified methods will be transferred to the GameManager singleton after it's added
- */
-
 public class Level1Manager : MonoBehaviour
 {
     private int _firstNum;
@@ -112,7 +107,7 @@ public class Level1Manager : MonoBehaviour
             MoveCirclesToEndgame();
             
             // hide spawn circle
-            StartCoroutine(GameManager.Instance.AlphaChange(DragDrop.SpawnCircle.GetComponent<CanvasGroup>(), 1f, 0f, .2f));
+            DragDrop.SpawnCircle.GetComponent<CanvasGroup>().LeanAlpha(0f, .2f);
         }
     }
 
@@ -170,77 +165,8 @@ public class Level1Manager : MonoBehaviour
     {
         winPanel.transform.SetAsLastSibling();
         winPanel.SetActive(true);
-        StartCoroutine(GameManager.Instance.AlphaChange(winPanel.GetComponent<CanvasGroup>(), 0f, 1f, 1f));
-
+        winPanel.GetComponent<CanvasGroup>().LeanAlpha(1f, 1f);
+        
         GameManager.Instance.LevelWon();
     }
-
-    /**
-    ALL FUNCTIONS BELOW WILL BE MOVED TO A GameManager SCRIPT!
-    **/
-    
-    /**
-    
-    // shake UI element
-    private IEnumerator Shake(RectTransform rectTransform, float shakeAmount, float duration)
-    {
-        float t = 0;
-        
-        Vector3 startLocalPos = rectTransform.localPosition;
-        while (t < duration)
-        {
-            t += Time.deltaTime;
-            rectTransform.localPosition = Random.insideUnitSphere * shakeAmount + startLocalPos;
-            yield return null;
-        }
-        rectTransform.localPosition = startLocalPos;
-
-        // unselect UI element
-        EventSystem.current.SetSelectedGameObject(null);
-    }
-
-    // change color of UI element
-    public IEnumerator ColorChange(Image image, Color from, Color to, float duration, float waitBetween)
-    {
-        float t = 0;
-        while (t < duration)
-        {
-            t += Time.deltaTime;
-            image.color = Color.Lerp(from, to, (t / duration));
-            yield return null;
-        }
-        t = 0;
-        yield return new WaitForSeconds(waitBetween);
-        while (t < duration)
-        {
-            t += Time.deltaTime;
-            image.color = Color.Lerp(to, from, (t / duration));
-            yield return null;
-        }
-    }
-
-    // override ColorChange if we don't want the color to change back
-    public IEnumerator ColorChange(Image image, Color from, Color to, float duration)
-    {
-        float t = 0;
-        while (t < duration)
-        {
-            t += Time.deltaTime;
-            image.color = Color.Lerp(from, to, (t / duration));
-            yield return null;
-        }
-    }
-
-    // change alpha of UI element
-    public IEnumerator AlphaChange(CanvasGroup canvasGroup, float from, float to, float duration)
-    {
-        float t = 0;
-        while (t < duration)
-        {
-            t += Time.deltaTime;
-            canvasGroup.alpha = Mathf.Lerp(from, to, t / duration);
-            yield return null;
-        }
-    }
-    **/
 }

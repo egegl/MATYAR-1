@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -38,6 +39,12 @@ public class DragDrop : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDrag
         _cross = transform.GetChild(0).gameObject;
         
         SpawnCircle = gameObject;
+    }
+
+    private void Start()
+    {
+        // fade in on start
+        _canvasGroup.LeanAlpha(1f, .3f);
     }
 
     // cross over the circle on mouse hover if in slot
