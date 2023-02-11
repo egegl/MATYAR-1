@@ -78,7 +78,7 @@ public class DragDrop : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDrag
         _inSlot = false;
         _removedPos = _rectTransform.position;
         _rectTransform.LeanMoveLocal(StartLocalPos, .4f).setEaseInOutQuart();
-        StartCoroutine(Level1Manager.Instance.ColorChange(_image, _image.color, Color.white, .2f));
+        StartCoroutine(GameManager.Instance.ColorChange(_image, _image.color, Color.white, .2f));
 
         CircDict[_slotIndex].Remove(gameObject);
         Destroy(gameObject, .4f);

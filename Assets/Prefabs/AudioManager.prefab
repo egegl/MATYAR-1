@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &3913858122625502582
+--- !u!1 &7461773844753312825
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,23 +8,22 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 3913858122625502581}
-  - component: {fileID: 3913858122625502587}
-  - component: {fileID: 3913858122625502580}
+  - component: {fileID: 3571587017306448865}
+  - component: {fileID: 1237013028195063155}
   m_Layer: 0
-  m_Name: SceneLoader
+  m_Name: AudioManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &3913858122625502581
+--- !u!4 &3571587017306448865
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3913858122625502582}
+  m_GameObject: {fileID: 7461773844753312825}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -33,28 +32,16 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3913858122625502587
+--- !u!114 &1237013028195063155
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3913858122625502582}
+  m_GameObject: {fileID: 7461773844753312825}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0a4e84096010ff24e92eb543dd2891ca, type: 3}
+  m_Script: {fileID: 11500000, guid: 0d9ac20e34fe7da4cb8020ba4e12ea9e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  transitionDuration: 0
---- !u!114 &3913858122625502580
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3913858122625502582}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c2e1de1f11304704ba26c6e481529e03, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  sounds: []

@@ -37,14 +37,7 @@ public class Level1Manager : MonoBehaviour
     private void Awake()
     {
         // singleton
-        if (Instance == null)
-        {
-            Instance = this;
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
+        Instance = this;
 
         _cbRectTransform = checkButton.GetComponent<RectTransform>();
         _cbImage = checkButton.GetComponent<Image>();
@@ -69,8 +62,14 @@ public class Level1Manager : MonoBehaviour
     }
     
     // reset level state
-    public void ResetLevel(bool randomize)
+    public void ResetLevel(bool menu)
     {
+        if (menu)
+        {
+            SceneLoader.Instance.LoadScene(0);
+            return;
+        }
+
         // get circles to reset
         for (int j = 1; j < 3; j++)
         {
@@ -107,8 +106,8 @@ public class Level1Manager : MonoBehaviour
         // show spawn circle
         DragDrop.SpawnCircle.GetComponent<CanvasGroup>().alpha = 1;
         
-        // randomize numbers if randomize
-        if (randomize) RandomizeNumbers();
+        // randomize numbers
+        RandomizeNumbers();
     }
 
     // checks if the number of circles in slots are correct
@@ -117,13 +116,13 @@ public class Level1Manager : MonoBehaviour
         if ((firstSlot.NumCircles + secondSlot.NumCircles) != (_firstNum + _secondNum))
         {
             // wrong answer visuals
-            StartCoroutine(ColorChange(_cbImage, Color.white, Color.red, .25f, 0f));
-            StartCoroutine(Shake(_cbRectTransform, 4, .5f));
+            StartCoroutine(GameManager.Instance.ColorChange(_cbImage, Color.white, Color.red, .25f, 0f));
+            StartCoroutine(GameManager.Instance.Shake(_cbRectTransform, 4, .5f));
         }
         else
         {
             // correct answer visuals
-            StartCoroutine(ColorChange(_cbImage, Color.white, Color.green, .5f));
+            StartCoroutine(GameManager.Instance.ColorChange(_cbImage, Color.white, Color.green, .5f));
 
             // enable endgame
             endgame.transform.SetAsLastSibling();
@@ -131,7 +130,7 @@ public class Level1Manager : MonoBehaviour
             MoveCirclesToEndgame();
             
             // hide spawn circle
-            StartCoroutine(AlphaChange(DragDrop.SpawnCircle.GetComponent<CanvasGroup>(), 1f, 0f, .2f));
+            StartCoroutine(GameManager.Instance.AlphaChange(DragDrop.SpawnCircle.GetComponent<CanvasGroup>(), 1f, 0f, .2f));
         }
     }
 
@@ -141,7 +140,7 @@ public class Level1Manager : MonoBehaviour
         if (int.TryParse(_input.text, out int result) && result == (_firstNum + _secondNum))
         {
             // correct answer visuals
-            StartCoroutine(ColorChange(_tbImage, Color.white, Color.green, .25f));
+            StartCoroutine(GameManager.Instance.ColorChange(_tbImage, Color.white, Color.green, .25f));
 
             // win game
             WinGame();
@@ -149,8 +148,8 @@ public class Level1Manager : MonoBehaviour
         else
         {
             // wrong answer visuals
-            StartCoroutine(ColorChange(_tbImage, Color.white, Color.red, .25f, 0f));
-            StartCoroutine(Shake(_tbRectTransform, 4, .5f));
+            StartCoroutine(GameManager.Instance.ColorChange(_tbImage, Color.white, Color.red, .25f, 0f));
+            StartCoroutine(GameManager.Instance.Shake(_tbRectTransform, 4, .5f));
         }
     }
     
@@ -189,13 +188,17 @@ public class Level1Manager : MonoBehaviour
     {
         winPanel.transform.SetAsLastSibling();
         winPanel.SetActive(true);
-        StartCoroutine(AlphaChange(winPanel.GetComponent<CanvasGroup>(), 0f, 1f, 1f));
+        StartCoroutine(GameManager.Instance.AlphaChange(winPanel.GetComponent<CanvasGroup>(), 0f, 1f, 1f));
+
+        GameManager.Instance.LevelWon();
     }
 
     /**
     ALL FUNCTIONS BELOW WILL BE MOVED TO A GameManager SCRIPT!
     **/
-
+    
+    /**
+    
     // shake UI element
     private IEnumerator Shake(RectTransform rectTransform, float shakeAmount, float duration)
     {
@@ -257,4 +260,5 @@ public class Level1Manager : MonoBehaviour
             yield return null;
         }
     }
+    **/
 }

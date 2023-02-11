@@ -20,14 +20,7 @@ public class SceneLoader : MonoBehaviour
     private void Awake()
     {
         // singleton
-        if (Instance == null)
-        {
-            Instance = this;
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
+        Instance = this;
 
         //_animator = transform.GetChild(0).GetComponent<Animator>();
     }

@@ -60,7 +60,7 @@ public class ItemSlot : MonoBehaviour, IDropHandler
         GameObject circle = Instantiate(circlePrefab, transform.parent, false);
         circle.transform.Rotate(0f, 0f, randZ);
         circle.transform.GetChild(0).Rotate(0f, 0f, -randZ);
-        StartCoroutine(Level1Manager.Instance.AlphaChange(circle.GetComponent<CanvasGroup>(), 0f, 1f, .3f));
+        StartCoroutine(GameManager.Instance.AlphaChange(circle.GetComponent<CanvasGroup>(), 0f, 1f, .3f));
         circle.SetActive(true);
     }
 }
