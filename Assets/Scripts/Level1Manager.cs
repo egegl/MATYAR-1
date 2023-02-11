@@ -12,7 +12,7 @@ using UnityEngine.Serialization;
  * specified methods will be transferred to the GameManager singleton after it's added
  */
 
-public class LevelManager : MonoBehaviour
+public class Level1Manager : MonoBehaviour
 {
     private int _firstNum;
     private int _secondNum;
@@ -32,7 +32,7 @@ public class LevelManager : MonoBehaviour
     [SerializeField] private GameObject endgame;
     [SerializeField] private GameObject winPanel;
     
-    public static LevelManager Instance;
+    public static Level1Manager Instance;
     
     private void Awake()
     {

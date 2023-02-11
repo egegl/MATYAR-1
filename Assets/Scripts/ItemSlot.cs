@@ -42,8 +42,10 @@ public class ItemSlot : MonoBehaviour, IDropHandler
             NumCircles++;
 
             // change color of circle according to slot
-            if (_index == 1) StartCoroutine(LevelManager.Instance.ColorChange(image, Color.white, Color.green, .1f));
-            else StartCoroutine(LevelManager.Instance.ColorChange(image, Color.white, Color.red, .1f));
+            if (_index == 1) image.color = Color.green;
+            //StartCoroutine(Level1Manager.Instance.ColorChange(image, Color.white, Color.green, .1f));
+            else image.color = Color.red;
+            //StartCoroutine(Level1Manager.Instance.ColorChange(image, Color.white, Color.red, .1f));
 
             // spawn new circle prefab on canvas at the slotted circle's start position
             SpawnCircle();
@@ -58,7 +60,7 @@ public class ItemSlot : MonoBehaviour, IDropHandler
         GameObject circle = Instantiate(circlePrefab, transform.parent, false);
         circle.transform.Rotate(0f, 0f, randZ);
         circle.transform.GetChild(0).Rotate(0f, 0f, -randZ);
-        StartCoroutine(LevelManager.Instance.AlphaChange(circle.GetComponent<CanvasGroup>(), 0f, 1f, .3f));
+        StartCoroutine(Level1Manager.Instance.AlphaChange(circle.GetComponent<CanvasGroup>(), 0f, 1f, .3f));
         circle.SetActive(true);
     }
 }
