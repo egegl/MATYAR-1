@@ -23,15 +23,15 @@ public class AudioManager : MonoBehaviour
         foreach (Sound sound in sounds)
         {
             sound.source = gameObject.AddComponent<AudioSource>();
-            sound.source.clip = sound.clip;
-            sound.source.volume = sound.volume;
-            sound.source.pitch = sound.pitch;
+            sound.source.clip = sound.Clip;
+            sound.source.volume = sound.Volume;
+            sound.source.pitch = sound.Pitch;
         }
     }
 
     public void Play(string name)
     {
-        Sound sound = Array.Find(sounds, s => s.name == name);
+        Sound sound = Array.Find(sounds, s => s.Name == name);
         sound.source.Play();
     }
 }

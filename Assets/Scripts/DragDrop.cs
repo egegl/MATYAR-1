@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -23,8 +22,8 @@ public class DragDrop : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDrag
     private static readonly List<GameObject> SecondCircList = new List<GameObject>();
     private static readonly Vector3 StartLocalPos  = new(-185f, 40f, 0f);
     
-    public static GameObject SpawnCircle;
-    public static Dictionary<int, List<GameObject>> CircDict = new Dictionary<int, List<GameObject>>
+    public static GameObject SpawnCircle { get; private set; }
+    public static Dictionary<int, List<GameObject>> CircDict = new Dictionary<int, List<GameObject>> 
     {
         [1] = FirstCircList,
         [2] = SecondCircList
