@@ -14,7 +14,7 @@ public class ItemSlot : MonoBehaviour, IDropHandler
 
     public int NumCircles { get; set; }
 
-    private void Start()
+    private void Awake()
     {
         _rectTransform = GetComponent<RectTransform>();
 

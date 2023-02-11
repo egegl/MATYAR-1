@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class LimitFps : MonoBehaviour
 {
-    void Start()
+    void Awake()
     {
         Application.targetFrameRate = 60;
     }

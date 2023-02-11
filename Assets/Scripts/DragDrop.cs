@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -29,14 +30,14 @@ public class DragDrop : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDrag
         [2] = SecondCircList
     };
 
-    private void Start()
+    private void Awake()
     {
         _canvas = GetComponentInParent<Canvas>();
         _canvasGroup = GetComponent<CanvasGroup>();
         _rectTransform = GetComponent<RectTransform>();
         _image = GetComponent<Image>();
         _cross = transform.GetChild(0).gameObject;
-
+        
         SpawnCircle = gameObject;
     }
 
