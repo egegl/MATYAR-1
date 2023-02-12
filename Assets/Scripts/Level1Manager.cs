@@ -159,7 +159,6 @@ public class Level1Manager : MonoBehaviour
     {
         winPanel.transform.SetAsLastSibling();
         winPanel.SetActive(true);
-        winPanel.GetComponent<CanvasGroup>().LeanAlpha(1f, 1f);
         
         GameManager.Instance.LevelWon();
     }
