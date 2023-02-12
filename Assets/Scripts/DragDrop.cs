@@ -73,8 +73,7 @@ public class DragDrop : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDrag
         // move back rest of the circles in slot if the removed circle is in the same slot
         foreach (GameObject circle in CircDict[slotIndex])
         {
-            DragDrop dragDrop = circle.GetComponent<DragDrop>();
-            dragDrop.MoveBack(_removedPos);
+            circle.GetComponent<DragDrop>().MoveBack(_removedPos);
         }
     }
 
