@@ -35,6 +35,8 @@ public class SceneLoader : MonoBehaviour
     // wrapper function for the Load coroutine
     public void LoadScene(int sceneIndex)
     {
+        if (SceneManager.GetActiveScene().buildIndex == 1) DragDrop.ResetLists();
+        
         StartCoroutine(Load(sceneIndex));
     }
     

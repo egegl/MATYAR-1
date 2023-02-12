@@ -14,7 +14,6 @@ public class ItemSlot : MonoBehaviour, IDropHandler
     private void Awake()
     {
         _rectTransform = GetComponent<RectTransform>();
-
         if (name.Equals("FirstSlot")) _index = 1;
         else _index = 2;
     }

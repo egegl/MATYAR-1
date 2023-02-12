@@ -21,7 +21,7 @@ public class DragDrop : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDrag
     
     private static readonly List<GameObject> FirstCircList = new List<GameObject>();
     private static readonly List<GameObject> SecondCircList = new List<GameObject>();
-    private static readonly Vector3 StartLocalPos  = new(-185f, 40f, 0f);
+    private static readonly Vector3 StartLocalPos  = new(-185f, 27.2f, 0f);
     
     public static GameObject SpawnCircle { get; private set; }
     public static Dictionary<int, List<GameObject>> CircDict = new Dictionary<int, List<GameObject>> 
@@ -91,6 +91,13 @@ public class DragDrop : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDrag
             CircDict[_slotIndex].Remove(gameObject);
             Destroy(gameObject, .4f);
         }
+    }
+
+    // reset circle lists
+    public static void ResetLists()
+    {
+        SecondCircList.Clear();
+        FirstCircList.Clear();
     }
 
     // change slot of the circle

@@ -128,7 +128,7 @@ public class Level1Manager : MonoBehaviour
     private void MoveCirclesToEndgame()
     {
         int x = 150;
-        int y = 160;
+        float y = 147.2f;
 
         for (int j = 1; j < 3; j++)
         {
@@ -141,7 +141,7 @@ public class Level1Manager : MonoBehaviour
                 
                 if (x == 330)
                 {
-                    y -= 60;
+                    y -= 60f;
                     x -= 240;
                 }
                 x += 60;
@@ -149,7 +149,7 @@ public class Level1Manager : MonoBehaviour
             if (x == 390)
             {
                 x -= 180;
-                y -= 60;
+                y -= 60f;
             }
         }
     }
