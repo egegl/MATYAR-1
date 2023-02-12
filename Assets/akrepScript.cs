@@ -19,12 +19,7 @@ public class akrepScript : MonoBehaviour
 
     static public bool onAkrep = false;
     public bool continueDraggingA;
-
-    void Start()
-    {
-
-    }
-
+    
     void Update()
     {
         if (Input.GetMouseButton(0) && onAkrep) { continueDraggingA = true; }

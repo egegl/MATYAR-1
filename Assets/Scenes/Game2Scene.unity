@@ -134,6 +134,8 @@ GameObject:
   - component: {fileID: 87296731}
   - component: {fileID: 87296733}
   - component: {fileID: 87296732}
+  - component: {fileID: 87296734}
+  - component: {fileID: 87296735}
   m_Layer: 5
   m_Name: Yelkovan
   m_TagString: Untagged
@@ -181,7 +183,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: c71e8dde537bb5247b82441c55d0a41e, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -199,6 +201,30 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 87296730}
   m_CullTransparentMesh: 1
+--- !u!225 &87296734
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 87296730}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
+--- !u!114 &87296735
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 87296730}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a13c57861caa8574b8990c486b6734dd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &199164742
 GameObject:
   m_ObjectHideFlags: 0
@@ -286,6 +312,8 @@ GameObject:
   - component: {fileID: 210670022}
   - component: {fileID: 210670024}
   - component: {fileID: 210670023}
+  - component: {fileID: 210670025}
+  - component: {fileID: 210670026}
   m_Layer: 5
   m_Name: Akrep
   m_TagString: Untagged
@@ -333,7 +361,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: c71e8dde537bb5247b82441c55d0a41e, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -351,6 +379,30 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 210670021}
   m_CullTransparentMesh: 1
+--- !u!225 &210670025
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 210670021}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
+--- !u!114 &210670026
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 210670021}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6a8a7899bc14d964197ed4293d92fe53, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &257838450
 GameObject:
   m_ObjectHideFlags: 0
@@ -1178,6 +1230,7 @@ GameObject:
   - component: {fileID: 1314507166}
   - component: {fileID: 1314507168}
   - component: {fileID: 1314507167}
+  - component: {fileID: 1314507169}
   m_Layer: 5
   m_Name: Clock
   m_TagString: Untagged
@@ -1245,6 +1298,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1314507165}
   m_CullTransparentMesh: 1
+--- !u!114 &1314507169
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1314507165}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8f04dc932c3a0af40bee3e3828c463c1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1347439330
 GameObject:
   m_ObjectHideFlags: 0
