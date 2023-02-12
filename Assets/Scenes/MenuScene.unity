@@ -132,7 +132,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3571587017306448865, guid: 739a608b149e777409d283194da26865, type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3571587017306448865, guid: 739a608b149e777409d283194da26865, type: 3}
       propertyPath: m_LocalPosition.x
@@ -381,7 +381,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &691987423
 GameObject:
@@ -616,7 +616,7 @@ GameObject:
   - component: {fileID: 771719783}
   - component: {fileID: 771719782}
   m_Layer: 5
-  m_Name: Button1 (1)
+  m_Name: Button2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -714,7 +714,7 @@ MonoBehaviour:
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 1
+          m_IntArgument: 2
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -1164,7 +1164,7 @@ RectTransform:
   - {fileID: 967028268}
   - {fileID: 1612060868}
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -1686,7 +1686,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Oyun 2
+  m_text: Saat Oyunu
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 76c42eff4466d1649b3392f5ef9ca97e, type: 2}
   m_sharedMaterial: {fileID: 45885057513739355, guid: 76c42eff4466d1649b3392f5ef9ca97e, type: 2}
@@ -1772,7 +1772,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3913858122625502581, guid: 1528cf675525998498efaf9f3329dc14, type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 3913858122625502581, guid: 1528cf675525998498efaf9f3329dc14, type: 3}
       propertyPath: m_LocalPosition.x
