@@ -1,1 +1,0 @@
-        _cGroup = GetComponent<CanvasGroup>();
