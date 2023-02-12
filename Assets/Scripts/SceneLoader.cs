@@ -13,13 +13,21 @@ public class SceneLoader : MonoBehaviour
     //private Animator _animator;
     
     [SerializeField] private float transitionDuration;
-    
-    public static SceneLoader Instance;
+
+    public static SceneLoader Instance { get; private set; }
 
     private void Awake()
     {
-        // singleton
-        Instance = this;
+        // singleton (don't destroy on load)
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
 
         //_animator = transform.GetChild(0).GetComponent<Animator>();
     }

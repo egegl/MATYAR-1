@@ -12,12 +12,20 @@ using Random = UnityEngine.Random;
 
 public class GameManager : MonoBehaviour
 {
-    public static GameManager Instance;
+    public static GameManager Instance { get; private set; }
 
     private void Awake()
-    {   
-        // singleton
-        Instance = this;
+    {
+        // singleton (don't destroy on load)
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
     }
     
     // What happens when the player wins? (add a reward system later)

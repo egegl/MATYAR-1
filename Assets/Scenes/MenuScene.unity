@@ -690,6 +690,7 @@ GameObject:
   - component: {fileID: 1378933197}
   - component: {fileID: 1378933196}
   - component: {fileID: 1378933195}
+  - component: {fileID: 1378933199}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -781,6 +782,18 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &1378933199
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1378933194}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bb9bb56fb1efe454b973afe0a0a2b580, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2053509622
 GameObject:
   m_ObjectHideFlags: 0
@@ -886,8 +899,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 3913858122570354612}
-        m_TargetAssemblyTypeName: SceneLoader, Assembly-CSharp
+      - m_Target: {fileID: 1378933199}
+        m_TargetAssemblyTypeName: ButtonHandler, Assembly-CSharp
         m_MethodName: LoadScene
         m_Mode: 3
         m_Arguments:
@@ -1041,8 +1054,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 3913858122570354612}
-        m_TargetAssemblyTypeName: SceneLoader, Assembly-CSharp
+      - m_Target: {fileID: 1378933199}
+        m_TargetAssemblyTypeName: ButtonHandler, Assembly-CSharp
         m_MethodName: LoadScene
         m_Mode: 3
         m_Arguments:
@@ -1148,14 +1161,3 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1528cf675525998498efaf9f3329dc14, type: 3}
---- !u!114 &3913858122570354612 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 3913858122625502587, guid: 1528cf675525998498efaf9f3329dc14, type: 3}
-  m_PrefabInstance: {fileID: 3913858122570354611}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0a4e84096010ff24e92eb543dd2891ca, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 

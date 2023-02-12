@@ -1,15 +1,15 @@
 using System;
 using UnityEngine;
-using UnityEngine.Audio;
 
 public class AudioManager : MonoBehaviour
 {
     [SerializeField] private Sound[] sounds;
 
-    public static AudioManager Instance;
+    public static AudioManager Instance { get; private set; }
 
     private void Awake()
     {
+        // singleton (don't destroy on load)
         if (Instance == null)
         {
             Instance = this;

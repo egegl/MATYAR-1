@@ -21,12 +21,12 @@ public class Level1Manager : MonoBehaviour
     [SerializeField] private GameObject endgame;
     [SerializeField] private GameObject winPanel;
 
-    private static Level1Manager _instance;
-    
+    public static Level1Manager Instance { get; private set; }
+
     private void Awake()
     {
         // singleton
-        _instance = this;
+        Instance = this;
 
         _cbRectTransform = checkButton.GetComponent<RectTransform>();
         _cbImage = checkButton.GetComponent<Image>();
@@ -51,14 +51,8 @@ public class Level1Manager : MonoBehaviour
     }
     
     // reset level state
-    public void ResetLevel(bool menu)
+    public void ResetLevel()
     {
-        if (menu)
-        {
-            SceneLoader.Instance.LoadScene(0);
-            return;
-        }
-
         // reset all circles in the scene
         foreach (DragDrop dragDrop in FindObjectsOfType<DragDrop>())
         {
