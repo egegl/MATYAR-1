@@ -31,7 +31,7 @@ public class Yelkovan : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDrag
         direction.Normalize();
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg - 90;
         _pivot.rotation = Quaternion.Euler(0f, 0f, angle);
-        akrepPivot.rotation = Quaternion.Euler(0f, 0f, akrepPivot.rotation.z - 90 + angle / 12);
+        //akrepPivot.rotation = Quaternion.Euler(0f, 0f, akrepPivot.rotation.z - 90 + angle / 12); FIX THIS LATER
     }
 
     public void OnEndDrag(PointerEventData eventData)
