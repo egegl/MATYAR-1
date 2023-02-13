@@ -53,7 +53,7 @@ public class Akrep : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHan
     // calculate hour from rotation
     private int Hour(float rotation)
     {
-        int ans = Mathf.RoundToInt(rotation);
+        int ans = (int)rotation;
         return ans / 30;
     }
 }

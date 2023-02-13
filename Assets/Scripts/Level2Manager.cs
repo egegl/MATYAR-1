@@ -28,6 +28,9 @@ public class Level2Manager : MonoBehaviour
 
     public void UpdateHours(int hr)
     {
+        // if the button is set to PM, add 12 to the hour
+        if (amPmText.text.Equals("Öğleden Önce")) hr += 12;
+
         analogToDigital.text = FixClockNum(hr) + analogToDigital.text.Substring(2);
     }
 
@@ -52,14 +55,19 @@ public class Level2Manager : MonoBehaviour
         }
         else amPmText.text = "Öğleden Önce";
 
+        UpdateHour(numChange);
+        
+        i++;
+    }
+
+    private void UpdateHour(int numChange)
+    {
         int firstNum = int.Parse(analogToDigital.text.Substring(0, 2)) + numChange;
 
         string FirstText = FixClockString(firstNum);
         if (FirstText.Length < 2) FirstText = "0" + FirstText;
 
         analogToDigital.text = FirstText + analogToDigital.text.Substring(2);
-        
-        i++;
     }
 
     private string FixClockString(int num)

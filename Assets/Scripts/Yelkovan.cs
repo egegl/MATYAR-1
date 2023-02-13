@@ -1,3 +1,4 @@
+using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -5,6 +6,8 @@ public class Yelkovan : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDrag
 {
     private CanvasGroup _cGroup;
     private Transform _pivot;
+    private float _z1;
+    private float _z2;
     [SerializeField] private CanvasGroup akrepCGroup;
     [SerializeField] private Transform akrepPivot;
 
@@ -21,26 +24,36 @@ public class Yelkovan : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDrag
     
     public void OnBeginDrag(PointerEventData eventData)
     {
+        // set initial rotation
+        _z1 = 360 - _pivot.eulerAngles.z;
+        if (_z1 == 360) _z1 = 0;
+
         _cGroup.alpha = .6f;
         akrepCGroup.interactable = false;
     }
 
     public void OnDrag(PointerEventData eventData)
     {
-        
-        int i = 0;
+        // rotate yelkovan
         Vector3 direction = Camera.main.ScreenToWorldPoint(Input.mousePosition) - _pivot.position;
         direction.Normalize();
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-        
-        _pivot.rotation = Quaternion.Euler(0f, 0f, angle - 90);
-        //akrepPivot.rotation = Quaternion.Euler(0f, 0f, akrepPivot.rotation.z + (angle / 12)); fix later
+        _pivot.eulerAngles = new Vector3(0f, 0f, angle - 90f);
+        //_pivot.Rotate(0f, 0f, angle - _pivot.eulerAngles.z - 90);
+
+        // get rotation difference
+        _z2 = 360f - _pivot.eulerAngles.z;
+        float zDiff = _z2 - _z1;
+
+        // calculate the relative rotation of akrep
+        float akrepRot = _z2 / 12f;
+        akrepPivot.rotation = Quaternion.Euler(0f, 0f, -akrepRot);
     }
 
     public void OnEndDrag(PointerEventData eventData)
     {
         _cGroup.alpha = 1f;
-        akrepCGroup.interactable = false;
+        akrepCGroup.interactable = true; 
 
         UpdateMins();
         Akrep.Instance.UpdateHours();
