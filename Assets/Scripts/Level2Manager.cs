@@ -6,6 +6,7 @@ public class Level2Manager : MonoBehaviour
     private int i;
     [SerializeField] private TextMeshProUGUI analogToDigital;
     [SerializeField] private TextMeshProUGUI amPmText;
+    [SerializeField] private TextMeshProUGUI durumText;
 
     public static Level2Manager Instance { get; private set; }
 
@@ -39,6 +40,18 @@ public class Level2Manager : MonoBehaviour
         // update hours
         if (amPmText.text.Equals("Öğleden Önce")) hr += 12;
         analogToDigital.text = FixClockNum(hr) + analogToDigital.text.Substring(2);
+
+        // update durum text
+        UpdateDurum(hr);
+    }
+
+    // update durum text
+    private void UpdateDurum(int hr)
+    {
+        if (hr < 5) durumText.text = "Gece";
+        else if (hr < 12) durumText.text = "Sabah";
+        else if (hr < 18) durumText.text = "Öğle";
+        else durumText.text = "Akşam";
     }
 
     // convert 0-9 numbers to 00-09
@@ -70,6 +83,9 @@ public class Level2Manager : MonoBehaviour
 
     private void UpdateHour(int numChange)
     {
+        // update durum text
+        UpdateDurum(numChange);
+
         int firstNum = int.Parse(analogToDigital.text.Substring(0, 2)) + numChange;
 
         string FirstText = FixClockString(firstNum);
