@@ -5,7 +5,8 @@ public class Level2Manager : MonoBehaviour
 {
     private int i;
     [SerializeField] private TextMeshProUGUI analogToDigital;
-    [SerializeField] private TextMeshProUGUI amPmText; 
+    [SerializeField] private TextMeshProUGUI amPmText;
+
     public static Level2Manager Instance { get; private set; }
 
     private void Awake()
@@ -17,23 +18,30 @@ public class Level2Manager : MonoBehaviour
     // reset level state
     public void ResetLevel()
     {
-        Debug.Log("Reset Level 2");
+        // reset analog clock
+        Yelkovan.Instance.Reset();
+        Akrep.Instance.Reset();
+
+        // reset digital clock
+        analogToDigital.text = "00:00";
     }
 
-    // update the digital clock based on the analog input
-    public void UpdateMins(int min)
+    // convert analog clock to digital
+    public void AnalogToDigital()
     {
+        // get minutes and hours
+        int min = Yelkovan.Instance.Min;
+        int hr = Akrep.Instance.Hr;
+
+        // update minutes
         analogToDigital.text = analogToDigital.text.Substring(0, 3) + FixClockNum(min);
-    }
 
-    public void UpdateHours(int hr)
-    {
-        // if the button is set to PM, add 12 to the hour
+        // update hours
         if (amPmText.text.Equals("Öğleden Önce")) hr += 12;
-
         analogToDigital.text = FixClockNum(hr) + analogToDigital.text.Substring(2);
     }
 
+    // convert 0-9 numbers to 00-09
     private string FixClockNum(int num)
     {
         string numStr = num.ToString();

@@ -3,12 +3,13 @@ using UnityEngine.EventSystems;
 
 public class Akrep : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHandler
 {
+    private float _z1;
+    private float _yelkovanFb;
     private CanvasGroup _cGroup;
     private Transform _pivot;
-    private float _prevZ;
-    [SerializeField] private CanvasGroup yelkovanCGroup;
     [SerializeField] private Transform yelkovanPivot;
 
+    public int Hr { get; private set; }
     public static Akrep Instance { get; private set; }
 
     private void Awake()
@@ -23,8 +24,8 @@ public class Akrep : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHan
     public void OnBeginDrag(PointerEventData eventData)
     {
         _cGroup.alpha = .6f;
-        yelkovanCGroup.interactable = false;
-        _prevZ= _pivot.eulerAngles.z;
+        _z1 = _pivot.rotation.eulerAngles.z;
+        //if (_z1 == 360) _z1 = 0;
     }
 
     public void OnDrag(PointerEventData eventData)
@@ -32,28 +33,63 @@ public class Akrep : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHan
         Vector2 direction = Camera.main.ScreenToWorldPoint(Input.mousePosition) - _pivot.position;
         direction.Normalize();
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-        _pivot.rotation = Quaternion.Euler(0f, 0f, angle - 90);
-        yelkovanPivot.rotation = Quaternion.Euler(0f, 0f, yelkovanPivot.rotation.z + angle * 12);
+        AkrepDrag(angle - 90);
+    }
+
+    public void AkrepDrag(float angle)
+    {
+        // rotate akrep
+        _pivot.rotation = Quaternion.Euler(0f, 0f, angle);
+        
+        // calculate feedback to yelkovan
+        float zDiff = angle - _z1;
+        _yelkovanFb = zDiff * 12;
     }
 
     public void OnEndDrag(PointerEventData eventData)
     {
         _cGroup.alpha = 1f;
-        
-        UpdateHours();
-        Yelkovan.Instance.UpdateMins();
+
+        // update hours
+        Hr = Hour(_pivot.eulerAngles.z);
+
+        // feedback to minutes
+        Yelkovan.Instance.Feedback(_yelkovanFb);
+
+        // remove later
+        Level2Manager.Instance.AnalogToDigital();
     }
 
-    // update hours on the digital clock
-    public void UpdateHours()
+    public void Feedback(int curr, int prev)
     {
-        Level2Manager.Instance.UpdateHours(Hour(360 - _pivot.rotation.eulerAngles.z));
+        // calculate ratios
+        float currRatio = curr / -2;
+        float prevRatio = prev / -2;
+
+        // calculate difference of ratios
+        float ratio = currRatio - prevRatio;
+
+        // rotate self (animation commented out)
+        _pivot.rotation = Quaternion.Euler(0f, 0f, _pivot.rotation.eulerAngles.z + ratio);
+        //_pivot.LeanRotateZ(_pivot.eulerAngles.z + ratio, .3f);
+
+        // update hours
+        Hr = Hour(_pivot.eulerAngles.z);
+    }
+
+    // reset rotation of pivot
+    public void Reset()
+    {
+        _pivot.rotation = Quaternion.identity;
     }
 
     // calculate hour from rotation
     private int Hour(float rotation)
     {
-        int ans = (int)rotation;
-        return ans / 30;
+        if (rotation < .1f && rotation > -.1f) rotation = 0;
+        int ans = (int)(360 - rotation);
+        ans /= 30;
+        if (ans == 12) ans = 0;
+        return ans;
     }
 }
