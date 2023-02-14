@@ -8,7 +8,7 @@ public class Yelkovan : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDrag
     private Transform _pivot;
     [SerializeField] private Transform akrepPivot;
 
-    public int Min { get; private set; }
+    public int Min { get; set; }
     public static Yelkovan Instance { get; private set; }
 
     private void Awake()
@@ -24,7 +24,6 @@ public class Yelkovan : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDrag
     {
         _cGroup.alpha = .6f;
         _z1 = _pivot.rotation.eulerAngles.z;
-        //if (_z1 == 360) _z1 = 0;
     }
 
     public void OnDrag(PointerEventData eventData)
@@ -57,12 +56,14 @@ public class Yelkovan : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDrag
         // adjust feedback angle
         while (fbAngle < -360) fbAngle += 360;
 
-        // rotate self (animation commented out)
-        _pivot.rotation = Quaternion.Euler(0f, 0f, _pivot.eulerAngles.z + fbAngle);
-        //_pivot.LeanRotateZ(_pivot.eulerAngles.z + fbAngle, .3f);
+        // calculate new angle
+        float newAngle = _pivot.eulerAngles.z + fbAngle;
 
         // update minutes
-        Min = Minute(_pivot.eulerAngles.z);
+        Min = Minute(newAngle);
+
+        // rotate self
+        _pivot.LeanRotateZ(newAngle, .4f).setEaseOutBack();
     }
 
     // reset rotation of pivot
@@ -74,7 +75,7 @@ public class Yelkovan : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDrag
     // calculate minute from rotation
     private int Minute(float angle)
     {
-        int ans = Mathf.RoundToInt(360 - angle);
+        int ans = Mathf.RoundToInt(360 - angle + .7f);
         ans /= 6;
         if (ans == 60) ans = 0;
         return ans;

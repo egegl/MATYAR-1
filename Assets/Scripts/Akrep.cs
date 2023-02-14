@@ -9,7 +9,7 @@ public class Akrep : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHan
     private Transform _pivot;
     [SerializeField] private Transform yelkovanPivot;
 
-    public int Hr { get; private set; }
+    public int Hr { get; set; }
     public static Akrep Instance { get; private set; }
 
     private void Awake()
@@ -25,7 +25,6 @@ public class Akrep : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHan
     {
         _cGroup.alpha = .6f;
         _z1 = _pivot.rotation.eulerAngles.z;
-        //if (_z1 == 360) _z1 = 0;
     }
 
     public void OnDrag(PointerEventData eventData)
@@ -66,15 +65,15 @@ public class Akrep : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHan
         float currRatio = curr / -2;
         float prevRatio = prev / -2;
 
-        // calculate difference of ratios
+        // calculate difference of ratios and new angle
         float ratio = currRatio - prevRatio;
-
-        // rotate self (animation commented out)
-        _pivot.rotation = Quaternion.Euler(0f, 0f, _pivot.rotation.eulerAngles.z + ratio);
-        //_pivot.LeanRotateZ(_pivot.eulerAngles.z + ratio, .3f);
+        float newAngle = _pivot.eulerAngles.z + ratio;
 
         // update hours
         Hr = Hour(_pivot.eulerAngles.z);
+
+        // rotate self
+        _pivot.LeanRotateZ(newAngle, .3f).setEaseOutBack();
     }
 
     // reset rotation of pivot

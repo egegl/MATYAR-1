@@ -23,46 +23,79 @@ public class Level2Manager : MonoBehaviour
         Yelkovan.Instance.Reset();
         Akrep.Instance.Reset();
 
+        // reset hour and minute
+        Akrep.Instance.Hr = 0;
+        Yelkovan.Instance.Min = 0;
+
         // reset digital clock
         analogToDigital.text = "00:00";
+
+        // reset durum text accordingly
+        UpdateDurum();       
     }
 
     // convert analog clock to digital
     public void AnalogToDigital()
     {
-        // get minutes and hours
-        int min = Yelkovan.Instance.Min;
-        int hr = Akrep.Instance.Hr;
-
         // update minutes
-        analogToDigital.text = analogToDigital.text.Substring(0, 3) + FixClockNum(min);
+        analogToDigital.text = analogToDigital.text.Substring(0, 3) + FixClockMin();
 
         // update hours
-        if (amPmText.text.Equals("Öğleden Önce")) hr += 12;
-        analogToDigital.text = FixClockNum(hr) + analogToDigital.text.Substring(2);
+        if (amPmText.text.Equals("Öğleden Önce")) Akrep.Instance.Hr += 12;
+        analogToDigital.text = FixClockHr() + analogToDigital.text.Substring(2);
 
         // update durum text
-        UpdateDurum(hr);
+        UpdateDurum();
     }
 
     // update durum text
-    private void UpdateDurum(int hr)
+    private void UpdateDurum()
     {
-        if (hr < 5) durumText.text = "Gece";
-        else if (hr < 12) durumText.text = "Sabah";
-        else if (hr < 18) durumText.text = "Öğle";
-        else durumText.text = "Akşam";
+        int hr = Akrep.Instance.Hr;
+
+        if (hr < 6) durumText.text = "Gece"; // 0, 1, 2, 3, 4, 5
+        else if (hr < 7) durumText.text = "Gün Doğumu"; // 6
+        else if (hr < 11) durumText.text = "Sabah"; // 7, 8, 9, 10
+        else if (hr < 13) durumText.text = "Öğlen"; // 11, 12
+        else if (hr < 17) durumText.text = "Öğleden Sonra"; // 13, 14, 15, 16
+        else if (hr < 19) durumText.text = "Akşamüstü"; // 17, 18
+        else if (hr < 20) durumText.text = "Gün Batımı"; // 19
+        else if (hr < 22) durumText.text = "Akşam"; // 20, 21
+        else durumText.text = "Gece"; // 22, 23
+    }
+
+    // convert 0-9 numbers to 00-09 and 60-inf to 00-60
+    private string FixClockMin()
+    {
+        int min = Yelkovan.Instance.Min;
+
+        string minStr = min.ToString();
+        if (min > 69)
+        {
+            minStr = (min - 60).ToString();
+        }
+        else if (min > 59)
+        {
+            minStr = "0" + (min - 60).ToString();
+        }
+        else if (min < 10)
+        {
+            minStr = "0" + minStr;
+        }
+        return minStr;
     }
 
     // convert 0-9 numbers to 00-09
-    private string FixClockNum(int num)
+    private string FixClockHr()
     {
-        string numStr = num.ToString();
-        if (num < 10)
+        int hr = Akrep.Instance.Hr;
+
+        string hrStr = hr.ToString();
+        if (hr < 10)
         {
-            numStr = "0" + numStr;
+            hrStr = "0" + hrStr;
         }
-        return numStr;
+        return hrStr;
     }
 
     // AM/PM selection of the 12h analog clock
@@ -75,7 +108,7 @@ public class Level2Manager : MonoBehaviour
             amPmText.text = "Öğleden Sonra";
         }
         else amPmText.text = "Öğleden Önce";
-
+        Akrep.Instance.Hr += numChange;
         UpdateHour(numChange);
         
         i++;
@@ -84,7 +117,7 @@ public class Level2Manager : MonoBehaviour
     private void UpdateHour(int numChange)
     {
         // update durum text
-        UpdateDurum(numChange);
+        UpdateDurum();
 
         int firstNum = int.Parse(analogToDigital.text.Substring(0, 2)) + numChange;
 

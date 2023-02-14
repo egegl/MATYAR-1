@@ -437,6 +437,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   yelkovanPivot: {fileID: 204977687}
+  fakeAkrep: {fileID: 0}
 --- !u!1 &251698946
 GameObject:
   m_ObjectHideFlags: 0
