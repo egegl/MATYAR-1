@@ -46,9 +46,6 @@ public class Yelkovan : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDrag
 
         // feedback to hours
         Akrep.Instance.Feedback(Min, Minute(_z1));
-        
-        // remove later
-        Level2Manager.Instance.AnalogToDigital();
     }
 
     public void Feedback(float fbAngle)
@@ -70,6 +67,7 @@ public class Yelkovan : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDrag
     public void Reset()
     {
         _pivot.rotation = Quaternion.identity;
+        Min = 0;
     }
 
     // calculate minute from rotation

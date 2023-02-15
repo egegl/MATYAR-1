@@ -8,7 +8,7 @@ using UnityEngine;
 * This class represents all of the optional parameters you can pass to a method (it also represents the internal representation of the tween).<br><br>
 * <strong id='optional'>Optional Parameters</strong> are passed at the end of every method:<br> 
 * <br>
-* &nbsp;&nbsp;<i>Example:</i><br>
+* &nbsp;&nbsp;<_i>Example:</_i><br>
 * &nbsp;&nbsp;LeanTween.moveX( gameObject, 1f, 1f).setEase( <a href="LeanTweenType.html">LeanTweenType</a>.easeInQuad ).setDelay(1f);<br>
 * <br>
 * You can pass the optional parameters in any order, and chain on as many as you wish.<br>
@@ -2247,9 +2247,9 @@ public class LTDescr
 	* @param {Action<>} onStart:Action<> the method that should be called when the tween is starting ex: tweenStarted( ){ }
 	* @return {LTDescr} LTDescr an object that distinguishes the tween
 	* @example
-	* <i>C#:</i><br>
+	* <_i>C#:</_i><br>
 	* LeanTween.moveX(gameObject, 5f, 2.0f ).setOnStart( ()=>{ Debug.Log("I started!"); });
-	* <i>Javascript:</i><br>
+	* <_i>Javascript:</_i><br>
 	* LeanTween.moveX(gameObject, 5f, 2.0f ).setOnStart( function(){ Debug.Log("I started!"); } );
 	*/
 	public LTDescr setOnStart( Action onStart ){

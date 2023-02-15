@@ -1,24 +1,40 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class ButtonHandler : MonoBehaviour
 {
+    public static ButtonHandler Instance { get; private set; }
+
+    private void Awake()
+    {
+        //singleton
+        Instance = this;
+    }
+
     public void ResetLevel1()
     {
         Level1Manager.Instance.ResetLevel();
+        AfterPress();
     }
 
     public void ResetLevel2()
     {
         Level2Manager.Instance.ResetLevel();
+        AfterPress();
     }
 
     public void LoadScene(int i)
     {
         SceneLoader.Instance.LoadScene(i);
+        AfterPress();
     }
 
-    public void ClickSound()
+    public void AfterPress()
     {
-        AudioManager.Instance.Play("ButtonClick"); // not implemented
+        // play click sound (not implemented)
+        //AudioManager.Instance.Play("ButtonClick");
+
+        // unselect UI element
+        EventSystem.current.SetSelectedGameObject(null);
     }
 }

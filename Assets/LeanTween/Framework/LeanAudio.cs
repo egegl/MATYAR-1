@@ -107,7 +107,7 @@ public class LeanAudio : object {
 			}
 
 			
-			// Debug.Log("i:"+i+" f:"+f+" passed:"+passed+" height:"+height+" time:"+time);
+			// Debug.Log("_i:"+_i+" f:"+f+" passed:"+passed+" height:"+height+" time:"+time);
 			if(passed + 0.5f*f>=time)
 				break;
 			if(listLength >= PROCESSING_ITERATIONS_MAX-1){
@@ -123,7 +123,7 @@ public class LeanAudio : object {
 				//Debug.Log("distPoint:"+distPoint+" passed:"+passed);
 
 				//list.Add( passed );
-				//list.Add( i%2==0 ? -height : height );
+				//list.Add( _i%2==0 ? -height : height );
 
 				longList[ listLength ] = passed;
 				longList[ listLength + 1 ] = i%2==0 ? -height : height;
@@ -139,8 +139,8 @@ public class LeanAudio : object {
 		generatedWaveDistancesCount = listLength / 2;
 
 		/*float[] wave = new float[ listLength ];
-		for(int i = 0; i < wave.Length; i++){
-			wave[i] = longList[i];
+		for(int _i = 0; _i < wave.Length; _i++){
+			wave[_i] = longList[_i];
 		}*/
 		return listLength;
 	}
@@ -161,7 +161,7 @@ public class LeanAudio : object {
 				waveIter += 2;
 				subWaveDiff = longList[waveIter] - longList[waveIter-2];
 				waveHeight = longList[waveIter+1];
-				// Debug.Log("passed wave i:"+i);
+				// Debug.Log("passed wave _i:"+_i);
 			}
 			subWaveTime = passedTime - subWaveTimeLast;
 			float ratioElapsed = subWaveTime / subWaveDiff;
@@ -183,14 +183,14 @@ public class LeanAudio : object {
 			}else if(options.waveStyle==LeanAudioOptions.LeanAudioWaveStyle.Noise){
 				float peakMulti = (1f-options.waveNoiseInfluence) + Mathf.PerlinNoise(0f, passedTime * options.waveNoiseScale ) * options.waveNoiseInfluence;
 				
-				/*if(i<25){
+				/*if(_i<25){
 					Debug.Log("passedTime:"+passedTime+" peakMulti:"+peakMulti+" infl:"+options.waveNoiseInfluence);
 				}*/
 
 				value *= peakMulti;
 			}
 			
-			//if(i<25)
+			//if(_i<25)
 			//	Debug.Log("passedTime:"+passedTime+" value:"+value+" ratioElapsed:"+ratioElapsed+" subWaveTime:"+subWaveTime+" subWaveDiff:"+subWaveDiff);
 			
 			value *= waveHeight;
@@ -209,7 +209,7 @@ public class LeanAudio : object {
 			}
 
 			audioArr[i] = value;
-			// Debug.Log("pt:"+pt+" i:"+i+" val:"+audioArr[i]+" len:"+audioArr.Length);
+			// Debug.Log("pt:"+pt+" _i:"+_i+" val:"+audioArr[_i]+" len:"+audioArr.Length);
 		}
 
 		
@@ -248,7 +248,7 @@ public class LeanAudio : object {
 		for(int i = 0; i < audioArr.Length; i++){
 			float pt = (float)i / (float)frequencyRate;
 			audioArr[i] = curve.Evaluate( pt );
-			// Debug.Log("pt:"+pt+" i:"+i+" val:"+audioArr[i]+" len:"+audioArr.Length);
+			// Debug.Log("pt:"+pt+" _i:"+_i+" val:"+audioArr[_i]+" len:"+audioArr.Length);
 		}
 
 		int lengthSamples = audioArr.Length;//(int)( (float)frequencyRate * curveTime );

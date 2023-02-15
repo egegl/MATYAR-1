@@ -1,12 +1,22 @@
 ﻿using UnityEngine;
 using TMPro;
+using UnityEngine.UI;
 
 public class Level2Manager : MonoBehaviour
 {
-    private int i;
+    private int _i;
+    private int _givenHr;
+    private int _givenMin;
+    private int _winTries;
+    private int _atdTries;
+
+    [SerializeField] private TextMeshProUGUI givenDigitalText;
+    [SerializeField] private TextMeshProUGUI givenDurumText;
     [SerializeField] private TextMeshProUGUI analogToDigital;
     [SerializeField] private TextMeshProUGUI amPmText;
     [SerializeField] private TextMeshProUGUI durumText;
+    [SerializeField] private CanvasGroup endgame;
+    [SerializeField] private Transform hearts;
 
     public static Level2Manager Instance { get; private set; }
 
@@ -14,6 +24,8 @@ public class Level2Manager : MonoBehaviour
     {
         // singleton
         Instance = this;
+
+        ResetLevel();
     }
 
     // reset level state
@@ -23,36 +35,104 @@ public class Level2Manager : MonoBehaviour
         Yelkovan.Instance.Reset();
         Akrep.Instance.Reset();
 
-        // reset hour and minute
-        Akrep.Instance.Hr = 0;
-        Yelkovan.Instance.Min = 0;
+        // hide endgame
+        SHEndgame(0);
 
-        // reset digital clock
-        analogToDigital.text = "00:00";
+        // randomize given time
+        RandomizeTime();
 
-        // reset durum text accordingly
-        UpdateDurum();       
+        // reset atd tries and win tries
+        _atdTries = 0;
+        _winTries = 0;
+    }
+
+    private void RandomizeTime()
+    {
+        // assign random values to given hours and minute
+        _givenHr = Random.Range(0, 24);
+        _givenMin = Random.Range(0, 60);
+
+        // change the text of given digital clock
+        givenDigitalText.text = FixClockHr(_givenHr) + ":" + FixClockMin(_givenMin);
+
+        // update given durum text
+        UpdateDurum(_givenHr, givenDurumText);
     }
 
     // convert analog clock to digital
     public void AnalogToDigital()
     {
         // update minutes
-        analogToDigital.text = analogToDigital.text.Substring(0, 3) + FixClockMin();
+        analogToDigital.text = analogToDigital.text.Substring(0, 3) + FixClockMin(Yelkovan.Instance.Min);
 
         // update hours
         if (amPmText.text.Equals("Öğleden Önce")) Akrep.Instance.Hr += 12;
-        analogToDigital.text = FixClockHr() + analogToDigital.text.Substring(2);
+        analogToDigital.text = FixClockHr(Akrep.Instance.Hr) + analogToDigital.text.Substring(2);
 
         // update durum text
-        UpdateDurum();
+        UpdateDurum(Akrep.Instance.Hr, durumText);
+    }
+
+    private void ResetHearts()
+    {
+        for (int i = 0; i < 3; i++)
+        {
+            GameObject heart = hearts.GetChild(i).gameObject;
+            heart.LeanScale(Vector3.one, .3f).setEaseOutBack();
+        }
+    }
+
+    public void ButtonAnalogToDigital()
+    {
+        if (_atdTries == 0) ResetHearts();
+
+        // analog to digital
+        AnalogToDigital();
+
+        // show endgame
+        SHEndgame(1);
+
+        // increment atd tries
+        _atdTries++;
+
+        ButtonHandler.Instance.AfterPress();
+    }
+
+    public void ButtonCheckWin()
+    {
+        // get heart object and destroy it
+        GameObject heart = hearts.GetChild(_winTries).gameObject;
+        heart.LeanScale(Vector3.zero, .4f).setEaseOutBack();
+
+        // increment win tries
+        _winTries++;
+
+        // lose level if there are no hearts left
+        if (_winTries == 3) LevelLost();
+
+        ButtonHandler.Instance.AfterPress();
+    }
+
+    private void LevelLost()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    private void SHEndgame(int enable)
+    {
+        bool interactable = false;
+        if (enable == 1) interactable = true;
+
+        // make endgame un/interactable
+        endgame.interactable = interactable;
+
+        // show/hide endgame animation
+        endgame.LeanAlpha(enable, .4f).setEaseOutQuad();
     }
 
     // update durum text
-    private void UpdateDurum()
+    private void UpdateDurum(int hr, TextMeshProUGUI durumText)
     {
-        int hr = Akrep.Instance.Hr;
-
         if (hr < 6) durumText.text = "Gece"; // 0, 1, 2, 3, 4, 5
         else if (hr < 7) durumText.text = "Gün Doğumu"; // 6
         else if (hr < 11) durumText.text = "Sabah"; // 7, 8, 9, 10
@@ -65,10 +145,8 @@ public class Level2Manager : MonoBehaviour
     }
 
     // convert 0-9 numbers to 00-09 and 60-inf to 00-60
-    private string FixClockMin()
+    private string FixClockMin(int min)
     {
-        int min = Yelkovan.Instance.Min;
-
         string minStr = min.ToString();
         if (min > 69)
         {
@@ -86,10 +164,8 @@ public class Level2Manager : MonoBehaviour
     }
 
     // convert 0-9 numbers to 00-09
-    private string FixClockHr()
+    private string FixClockHr(int hr)
     {
-        int hr = Akrep.Instance.Hr;
-
         string hrStr = hr.ToString();
         if (hr < 10)
         {
@@ -99,10 +175,10 @@ public class Level2Manager : MonoBehaviour
     }
 
     // AM/PM selection of the 12h analog clock
-    public void AmPm()
+    public void ButtonAmPm()
     {
         int numChange = 12;
-        if (i % 2 != 0)
+        if (_i % 2 != 0)
         {
             numChange *= -1;
             amPmText.text = "Öğleden Sonra";
@@ -111,13 +187,15 @@ public class Level2Manager : MonoBehaviour
         Akrep.Instance.Hr += numChange;
         UpdateHour(numChange);
         
-        i++;
+        _i++;
+
+        ButtonHandler.Instance.AfterPress();
     }
 
     private void UpdateHour(int numChange)
     {
         // update durum text
-        UpdateDurum();
+        UpdateDurum(Akrep.Instance.Hr, durumText);
 
         int firstNum = int.Parse(analogToDigital.text.Substring(0, 2)) + numChange;
 

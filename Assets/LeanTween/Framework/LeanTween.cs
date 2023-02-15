@@ -225,7 +225,7 @@ public enum LeanProp
 * <a href="#index">Index of All Methods</a> | <a href="LTDescr.html">Optional Paramaters that can be passed</a><br /><br />
 * <strong id='optional'>Optional Parameters</strong> are passed at the end of every method<br /> 
 * <br />
-* <i>Example:</i><br />
+* <_i>Example:</_i><br />
 * LeanTween.moveX( gameObject, 1f, 1f).setEase( <a href="LeanTweenType.html">LeanTweenType</a>.easeInQuad ).setDelay(1f);<br />
 * <br />
 * You can pass the optional parameters in any order, and chain on as many as you wish!<br /><br />
@@ -404,8 +404,8 @@ public class LeanTween : MonoBehaviour {
             //           Debug.Log("tweenMaxSearch:"+tweenMaxSearch +" maxTweens:"+maxTweens);
             for( int i = 0; i <= tweenMaxSearch && i < maxTweens; i++){
                 tween = tweens[i];
-//              if(i==0 && tweens[i].toggle)
-//                  Debug.Log("tweens["+i+"]"+tweens[i]);
+//              if(_i==0 && tweens[_i].toggle)
+//                  Debug.Log("tweens["+_i+"]"+tweens[_i]);
                 if(tween.toggle){
                     maxTweenReached = i;
 
@@ -449,11 +449,11 @@ public class LeanTween : MonoBehaviour {
         if(tweens[i].toggle){
             tweens[i].toggle = false;
             tweens[i].counter = uint.MaxValue;
-            //logError("Removing tween["+i+"]:"+tweens[i]);
+            //logError("Removing tween["+_i+"]:"+tweens[_i]);
             if(tweens[i].destroyOnComplete){
-//              Debug.Log("destroying tween.type:"+tween.type+" ltRect"+(tweens[i]._optional.ltRect==null));
+//              Debug.Log("destroying tween.type:"+tween.type+" ltRect"+(tweens[_i]._optional.ltRect==null));
                 if(tweens[i]._optional.ltRect!=null){
-                    //  Debug.Log("destroy i:"+i+" id:"+tweens[i].ltRect.id);
+                    //  Debug.Log("destroy _i:"+_i+" id:"+tweens[_i].ltRect.id);
                     LTGUI.destroy( tweens[i]._optional.ltRect.id );
                 }else{ // check if equal to tweenEmpty
                     if(tweens[i].trans!=null && tweens[i].trans.gameObject!=_tweenEmpty){
@@ -461,9 +461,9 @@ public class LeanTween : MonoBehaviour {
                     }
                 }
             }
-            //tweens[i].optional = null;
+            //tweens[_i].optional = null;
             startSearch = i;
-            //Debug.Log("start search reset:"+startSearch + " i:"+i+" tweenMaxSearch:"+tweenMaxSearch);
+            //Debug.Log("start search reset:"+startSearch + " _i:"+_i+" tweenMaxSearch:"+tweenMaxSearch);
             if(i+1>=tweenMaxSearch){
                 //Debug.Log("reset to zero");
                 startSearch = 0;
@@ -966,7 +966,7 @@ public class LeanTween : MonoBehaviour {
                 return logError("LeanTween - You have run out of available spaces for tweening. To avoid this error increase the number of spaces to available for tweening when you initialize the LeanTween class ex: LeanTween.init( "+(maxTweens*2)+" );") as LTDescr;
             if(i>=maxTweens)
                 i = 0;
-            //          Debug.Log("searching i:"+i);
+            //          Debug.Log("searching _i:"+_i);
             if(tweens[i].toggle==false){
                 if(i+1>tweenMaxSearch && i+1 < maxTweens)
                     tweenMaxSearch = i+1;
@@ -980,7 +980,7 @@ public class LeanTween : MonoBehaviour {
         if(found==false)
             logError("no available tween found!");
 
-        // Debug.Log("new tween with i:"+i+" counter:"+tweens[i].counter+" tweenMaxSearch:"+tweenMaxSearch+" tween:"+tweens[i]);
+        // Debug.Log("new tween with _i:"+_i+" counter:"+tweens[_i].counter+" tweenMaxSearch:"+tweenMaxSearch+" tween:"+tweens[_i]);
         tweens[i].reset();
 
         global_counter++;
@@ -1060,7 +1060,7 @@ public class LeanTween : MonoBehaviour {
         // Loop through and find available sequence
         for (int i = 0; i < sequences.Length; i++)
         {
-            //          Debug.Log("i:" + i + " sequences[i]:" + sequences[i]);
+            //          Debug.Log("_i:" + _i + " sequences[_i]:" + sequences[_i]);
             if (sequences[i].tween == null || sequences[i].tween.toggle == false)
             {
                 if (sequences[i].toggle == false)
@@ -1280,9 +1280,9 @@ public class LeanTween : MonoBehaviour {
     * @param {float} time:float The time to complete the tween in
     * @return {LTDescr} LTDescr an object that distinguishes the tween
     * @example
-    * <i>Javascript:</i><br />
+    * <_i>Javascript:</_i><br />
     * LeanTween.move(gameObject, [Vector3(0,0,0),Vector3(1,0,0),Vector3(1,0,0),Vector3(1,0,1)], 2.0) .setEase(LeanTweenType.easeOutQuad).setOrientToPath(true);<br /><br />
-    * <i>C#:</i><br />
+    * <_i>C#:</_i><br />
     * LeanTween.move(gameObject, new Vector3[]{new Vector3(0f,0f,0f),new Vector3(1f,0f,0f),new Vector3(1f,0f,0f),new Vector3(1f,0f,1f)}, 1.5f).setEase(LeanTweenType.easeOutQuad).setOrientToPath(true);;<br />
     */  
     public static LTDescr move(GameObject gameObject, Vector3[] to, float time){
@@ -1318,9 +1318,9 @@ public class LeanTween : MonoBehaviour {
     * @param {float} time:float The time to complete the tween in
     * @return {LTDescr} LTDescr an object that distinguishes the tween
     * @example
-    * <i>Javascript:</i><br />
+    * <_i>Javascript:</_i><br />
     * LeanTween.moveSpline(gameObject, [Vector3(0,0,0),Vector3(1,0,0),Vector3(1,0,0),Vector3(1,0,1)], 2.0) .setEase(LeanTweenType.easeOutQuad).setOrientToPath(true);<br /><br />
-    * <i>C#:</i><br />
+    * <_i>C#:</_i><br />
     * LeanTween.moveSpline(gameObject, new Vector3[]{new Vector3(0f,0f,0f),new Vector3(1f,0f,0f),new Vector3(1f,0f,0f),new Vector3(1f,0f,1f)}, 1.5f).setEase(LeanTweenType.easeOutQuad).setOrientToPath(true);<br />
     */
     public static LTDescr moveSpline(GameObject gameObject, Vector3[] to, float time){
@@ -1339,9 +1339,9 @@ public class LeanTween : MonoBehaviour {
     * @param {float} time:float The time to complete the tween in
     * @return {LTDescr} LTDescr an object that distinguishes the tween
     * @example
-    * <i>Javascript:</i><br />
+    * <_i>Javascript:</_i><br />
     * LeanTween.moveSpline(gameObject, ltSpline, 2.0) .setEase(LeanTweenType.easeOutQuad).setOrientToPath(true);<br /><br />
-    * <i>C#:</i><br />
+    * <_i>C#:</_i><br />
     * LeanTween.moveSpline(gameObject, ltSpline, 1.5f).setEase(LeanTweenType.easeOutQuad).setOrientToPath(true);<br />
     */
     public static LTDescr moveSpline(GameObject gameObject, LTSpline to, float time){
@@ -1360,9 +1360,9 @@ public class LeanTween : MonoBehaviour {
     * @param {float} time:float The time to complete the tween in
     * @return {LTDescr} LTDescr an object that distinguishes the tween
     * @example
-    * <i>Javascript:</i><br />
+    * <_i>Javascript:</_i><br />
     * LeanTween.moveSpline(gameObject, [Vector3(0,0,0),Vector3(1,0,0),Vector3(1,0,0),Vector3(1,0,1)], 2.0) .setEase(LeanTweenType.easeOutQuad).setOrientToPath(true);<br /><br />
-    * <i>C#:</i><br />
+    * <_i>C#:</_i><br />
     * LeanTween.moveSpline(gameObject, new Vector3[]{new Vector3(0f,0f,0f),new Vector3(1f,0f,0f),new Vector3(1f,0f,0f),new Vector3(1f,0f,1f)}, 1.5f).setEase(LeanTweenType.easeOutQuad).setOrientToPath(true);<br />
     */
     public static LTDescr moveSplineLocal(GameObject gameObject, Vector3[] to, float time){
@@ -1450,9 +1450,9 @@ public class LeanTween : MonoBehaviour {
     * @param {float} time:float The time to complete the tween in
     * @return {LTDescr} LTDescr an object that distinguishes the tween
     * @example
-    * <i>Javascript:</i><br />
+    * <_i>Javascript:</_i><br />
     * LeanTween.moveLocal(gameObject, [Vector3(0,0,0),Vector3(1,0,0),Vector3(1,0,0),Vector3(1,0,1)], 2.0).setEase(LeanTweenType.easeOutQuad).setOrientToPath(true);<br /><br />
-    * <i>C#:</i><br />
+    * <_i>C#:</_i><br />
     * LeanTween.moveLocal(gameObject, new Vector3[]{Vector3(0f,0f,0f),Vector3(1f,0f,0f),Vector3(1f,0f,0f),Vector3(1f,0f,1f)}).setEase(LeanTweenType.easeOutQuad).setOrientToPath(true);<br />
     */
     public static LTDescr moveLocal(GameObject gameObject, Vector3[] to, float time){
@@ -1599,7 +1599,7 @@ public class LeanTween : MonoBehaviour {
     * @param {float} time:float time The time to complete the rotation in
     * @return {LTDescr} LTDescr an object that distinguishes the tween
     * @example
-    * <i>Example:</i><br />
+    * <_i>Example:</_i><br />
     * LeanTween.rotateAround ( gameObject, Vector3.left, 90f,  1f );
     */
     public static LTDescr rotateAround(GameObject gameObject, Vector3 axis, float add, float time){
@@ -1616,7 +1616,7 @@ public class LeanTween : MonoBehaviour {
     * @param {float} time:float time The time to complete the rotation in
     * @return {LTDescr} LTDescr an object that distinguishes the tween
     * @example
-    * <i>Example:</i><br />
+    * <_i>Example:</_i><br />
     * LeanTween.rotateAround ( gameObject, Vector3.left, 90f,  1f );
     */
     public static LTDescr rotateAroundLocal(GameObject gameObject, Vector3 axis, float add, float time){
@@ -1645,14 +1645,14 @@ public class LeanTween : MonoBehaviour {
     * @param {float} float time The time to complete the tween in
     * @return {LTDescr} LTDescr an object that distinguishes the tween
     * @example
-    * <i>Example Javascript: </i><br />
+    * <_i>Example Javascript: </_i><br />
     * var bRect:LTRect = new LTRect( 0, 0, 100, 50 );<br />
     * LeanTween.scale( bRect, Vector2(bRect.rect.width, bRect.rect.height) * 1.3, 0.25 ).setEase(LeanTweenType.easeOutBounce);<br />
     * function OnGUI(){<br />
     * &#160; if(GUI.Button(bRect.rect, "Scale")){ }<br />
     * }<br />
     * <br />
-    * <i>Example C#: </i> <br />
+    * <_i>Example C#: </_i> <br />
     * LTRect bRect = new LTRect( 0f, 0f, 100f, 50f );<br />
     * LeanTween.scale( bRect, new Vector2(150f,75f), 0.25f ).setEase(LeanTweenType.easeOutBounce);<br />
     * void OnGUI(){<br />
@@ -1712,12 +1712,12 @@ public class LeanTween : MonoBehaviour {
     * @param {float} time:float The time to complete the tween in
     * @return {LTDescr} LTDescr an object that distinguishes the tween
     * @example
-    * <i>Example Javascript: </i><br />
+    * <_i>Example Javascript: </_i><br />
     * LeanTween.value( gameObject, 1f, 5f, 5f).setOnUpdate( function( val:float ){ <br />
     * &#160;Debug.Log("tweened val:"+val);<br />
     * } );<br />
     * <br />
-    * <i>Example C#: </i> <br />
+    * <_i>Example C#: </_i> <br />
     * LeanTween.value( gameObject, 1f, 5f, 5f).setOnUpdate( (float val)=>{ <br />
     * &#160;Debug.Log("tweened val:"+val);<br />
     * } );<br />
@@ -1739,12 +1739,12 @@ public class LeanTween : MonoBehaviour {
     * @param {float} time:float The time to complete the tween in
     * @return {LTDescr} LTDescr an object that distinguishes the tween
     * @example
-    * <i>Example Javascript: </i><br />
+    * <_i>Example Javascript: </_i><br />
     * LeanTween.value( gameObject, new Vector2(1f,0f), new Vector3(5f,0f), 5f).setOnUpdate( function( val:Vector2 ){ <br />
     * &#160;Debug.Log("tweened val:"+val);<br />
     * } );<br />
     * <br />
-    * <i>Example C#: </i> <br />
+    * <_i>Example C#: </_i> <br />
     * LeanTween.value( gameObject, new Vector3(1f,0f), new Vector3(5f,0f), 5f).setOnUpdate( (Vector2 val)=>{ <br />
     * &#160;Debug.Log("tweened val:"+val);<br />
     * } );<br />
@@ -1763,12 +1763,12 @@ public class LeanTween : MonoBehaviour {
     * @param {float} time:float The time to complete the tween in
     * @return {LTDescr} LTDescr an object that distinguishes the tween
     * @example
-    * <i>Example Javascript: </i><br />
+    * <_i>Example Javascript: </_i><br />
     * LeanTween.value( gameObject, new Vector3(1f,0f,0f), new Vector3(5f,0f,0f), 5f).setOnUpdate( function( val:Vector3 ){ <br />
     * &#160;Debug.Log("tweened val:"+val);<br />
     * } );<br />
     * <br />
-    * <i>Example C#: </i> <br />
+    * <_i>Example C#: </_i> <br />
     * LeanTween.value( gameObject, new Vector3(1f,0f,0f), new Vector3(5f,0f,0f), 5f).setOnUpdate( (Vector3 val)=>{ <br />
     * &#160;Debug.Log("tweened val:"+val);<br />
     * } );<br />
@@ -1787,12 +1787,12 @@ public class LeanTween : MonoBehaviour {
     * @param {float} time:float The time to complete the tween in
     * @return {LTDescr} LTDescr an object that distinguishes the tween
     * @example
-    * <i>Example Javascript: </i><br />
+    * <_i>Example Javascript: </_i><br />
     * LeanTween.value( gameObject, Color.red, Color.yellow, 5f).setOnUpdate( function( val:Color ){ <br />
     * &#160;Debug.Log("tweened val:"+val);<br />
     * } );<br />
     * <br />
-    * <i>Example C#: </i> <br />
+    * <_i>Example C#: </_i> <br />
     * LeanTween.value( gameObject, Color.red, Color.yellow, 5f).setOnUpdate( (Color val)=>{ <br />
     * &#160;Debug.Log("tweened val:"+val);<br />
     * } );<br />
@@ -1819,13 +1819,13 @@ public class LeanTween : MonoBehaviour {
     * @param {float} float time The time to complete the tween in
     * @return {LTDescr} LTDescr an object that distinguishes the tween
     * @example
-    * <i>Example Javascript: </i><br />
+    * <_i>Example Javascript: </_i><br />
     * LeanTween.value( gameObject, updateValueExampleCallback, 180f, 270f, 1f).setEase(LeanTweenType.easeOutElastic);<br />
     * function updateValueExampleCallback( val:float ){<br />
     * &#160; Debug.Log("tweened value:"+val+" set this to whatever variable you are tweening...");<br />
     * }<br />
     * <br />
-    * <i>Example C#: </i> <br />
+    * <_i>Example C#: </_i> <br />
     * LeanTween.value( gameObject, updateValueExampleCallback, 180f, 270f, 1f).setEase(LeanTweenType.easeOutElastic);<br />
     * void updateValueExampleCallback( float val ){<br />
     * &#160; Debug.Log("tweened value:"+val+" set this to whatever variable you are tweening...");<br />
@@ -1847,13 +1847,13 @@ public class LeanTween : MonoBehaviour {
     * @param {float} float time The time to complete the tween in
     * @return {LTDescr} LTDescr an object that distinguishes the tween
     * @example
-    * <i>Example Javascript: </i><br />
+    * <_i>Example Javascript: </_i><br />
     * LeanTween.value( gameObject, updateValueExampleCallback, 180f, 270f, 1f).setEase(LeanTweenType.easeOutElastic);<br />
     * function updateValueExampleCallback( val:float, ratio:float ){<br />
     * &#160; Debug.Log("tweened value:"+val+" percent complete:"+ratio*100);<br />
     * }<br />
     * <br />
-    * <i>Example C#: </i> <br />
+    * <_i>Example C#: </_i> <br />
     * LeanTween.value( gameObject, updateValueExampleCallback, 180f, 270f, 1f).setEase(LeanTweenType.easeOutElastic);<br />
     * void updateValueExampleCallback( float val, float ratio ){<br />
     * &#160; Debug.Log("tweened value:"+val+" percent complete:"+ratio*100);<br />
@@ -1875,13 +1875,13 @@ public class LeanTween : MonoBehaviour {
     * @param {Color} Color time The time to complete the tween in
     * @return {LTDescr} LTDescr an object that distinguishes the tween
     * @example
-    * <i>Example Javascript: </i><br />
+    * <_i>Example Javascript: </_i><br />
     * LeanTween.value( gameObject, updateValueExampleCallback, Color.red, Color.green, 1f).setEase(LeanTweenType.easeOutElastic);<br />
     * function updateValueExampleCallback( val:Color ){<br />
     * &#160; Debug.Log("tweened color:"+val+" set this to whatever variable you are tweening...");<br />
     * }<br />
     * <br />
-    * <i>Example C#: </i> <br />
+    * <_i>Example C#: </_i> <br />
     * LeanTween.value( gameObject, updateValueExampleCallback, Color.red, Color.green, 1f).setEase(LeanTweenType.easeOutElastic);<br />
     * void updateValueExampleCallback( Color val ){<br />
     * &#160; Debug.Log("tweened color:"+val+" set this to whatever variable you are tweening...");<br />
@@ -3140,7 +3140,7 @@ public class LTBezierPath {
         {
             float ratio = (float)i / (float)maxIndex;
             float dist = Vector3.Distance(pt, point( ratio ) );
-            // Debug.Log("i:"+i+" dist:"+dist);
+            // Debug.Log("_i:"+_i+" dist:"+dist);
             if (dist < closestDist)
             {
                 closestDist = dist;
@@ -3157,7 +3157,7 @@ public class LTBezierPath {
 * @class LTSpline
 * @constructor
 * @param {Vector3 Array} pts A set of points that define the points the path will pass through (starting with starting control point, and ending with a control point)<br />
-<i><strong>Note:</strong> The first and last item just define the angle of the end points, they are not actually used in the spline path itself. If you do not care about the angle you can jus set the first two items and last two items as the same value.</i>
+<_i><strong>Note:</strong> The first and last item just define the angle of the end points, they are not actually used in the spline path itself. If you do not care about the angle you can jus set the first two items and last two items as the same value.</_i>
 * @example 
 * LTSpline ltSpline = new LTSpline( new Vector3[] { new Vector3(0f,0f,0f),new Vector3(0f,0f,0f), new Vector3(0f,0.5f,0f), new Vector3(1f,1f,0f), new Vector3(1f,1f,0f)} );<br /><br />
 * LeanTween.moveSpline(lt, ltSpline.vec3, 4.0f).setOrientToPath(true).setDelay(1f).setEase(LeanTweenType.easeInOutQuad); // animate <br />
@@ -3208,7 +3208,7 @@ public class LTSpline {
         Vector3 earlierPoint = this.pts[1];
         float totalDistance = 0f;
         for(int i=1; i < this.pts.Length-1; i++){
-            // float pointDistance = (this.pts[i]-earlierPoint).sqrMagnitude;
+            // float pointDistance = (this.pts[_i]-earlierPoint).sqrMagnitude;
             float pointDistance = Vector3.Distance(this.pts[i], earlierPoint);
             //Debug.Log("pointDist:"+pointDistance);
             if(pointDistance < minSegment){
@@ -3319,7 +3319,7 @@ public class LTSpline {
         int closestI = 0;
         for (int i = 0; i < ptsAdjLength; i++) {
             float dist = Vector3.Distance(pt, ptsAdj[i]);
-            // Debug.Log("i:"+i+" dist:"+dist);
+            // Debug.Log("_i:"+_i+" dist:"+dist);
             if(dist<closestDist){
                 closestDist = dist;
                 closestI = i;
@@ -3909,7 +3909,7 @@ public class LTGUI {
 
                 for(int i = baseI; i < maxLoop; i++){
                     r = levels[i];
-                    // Debug.Log("r:"+r+" i:"+i);
+                    // Debug.Log("r:"+r+" _i:"+_i);
                     if(r!=null /*&& checkOnScreen(r.rect)*/){
                         //Debug.Log("label:"+r.labelStr+" textColor:"+r.style.normal.textColor);
                         if(r.useColor)
@@ -4027,21 +4027,21 @@ public class LTGUI {
         bool hasNoOverlap = true;
         bool wasAddedToList = false;
         for(int i = 0; i < buttonLevels.Length; i++){
-            // Debug.Log("buttonLastFrame["+i+"]:"+buttonLastFrame[i]);
-            //Debug.Log("buttonLevels["+i+"]:"+buttonLevels[i]);
+            // Debug.Log("buttonLastFrame["+_i+"]:"+buttonLastFrame[_i]);
+            //Debug.Log("buttonLevels["+_i+"]:"+buttonLevels[_i]);
             if(buttonLevels[i]>=0){
-                //Debug.Log("buttonLastFrame["+i+"]:"+buttonLastFrame[i]+" Time.frameCount:"+Time.frameCount);
+                //Debug.Log("buttonLastFrame["+_i+"]:"+buttonLastFrame[_i]+" Time.frameCount:"+Time.frameCount);
                 if( buttonLastFrame[i] + 1 < Time.frameCount ){ // It has to have been visible within the current, or
                     buttonLevels[i] = -1;
-                    // Debug.Log("resetting i:"+i);
+                    // Debug.Log("resetting _i:"+_i);
                 }else{
-                    //if(buttonLevels[i]>=0)
-                    //   Debug.Log("buttonLevels["+i+"]:"+buttonLevels[i]);
+                    //if(buttonLevels[_i]>=0)
+                    //   Debug.Log("buttonLevels["+_i+"]:"+buttonLevels[_i]);
                     if(buttonLevels[i]>depth){
                         /*if(firstTouch().x > 0){
-                            Debug.Log("buttons["+i+"]:"+buttons[i] + " firstTouch:");
+                            Debug.Log("buttons["+_i+"]:"+buttons[_i] + " firstTouch:");
                             Debug.Log(firstTouch());
-                            Debug.Log(buttonLevels[i]);
+                            Debug.Log(buttonLevels[_i]);
                         }*/
                         if(pressedWithinRect( buttons[i] )){
                             hasNoOverlap = false; // there is an overlapping button that is higher
