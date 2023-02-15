@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
-using UnityEditor;
 
 public class Level2Manager : MonoBehaviour
 {

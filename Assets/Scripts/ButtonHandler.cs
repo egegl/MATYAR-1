@@ -23,6 +23,12 @@ public class ButtonHandler : MonoBehaviour
         AfterPress();
     }
 
+    public void ResetLevel3()
+    {
+        Level3Manager.Instance.ResetLevel();
+        AfterPress();
+    }
+
     public void LoadScene(int i)
     {
         SceneLoader.Instance.LoadScene(i);
