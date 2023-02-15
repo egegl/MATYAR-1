@@ -8,7 +8,6 @@ public class Level2Manager : MonoBehaviour
     private int _i;
     private int _givenHr;
     private int _givenMin;
-    private int _winTries;
     private int _atdTries;
     private Image _wbImage;
     private RectTransform _wbRectTransform;
@@ -19,10 +18,8 @@ public class Level2Manager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI amPmText;
     [SerializeField] private TextMeshProUGUI durumText;
     [SerializeField] private CanvasGroup endgame;
-    [SerializeField] private Transform hearts;
     [SerializeField] private GameObject winButton;
     [SerializeField] private GameObject winPanel;
-    [SerializeField] private GameObject lossPanel;
 
     public static Level2Manager Instance { get; private set; }
 
@@ -50,9 +47,8 @@ public class Level2Manager : MonoBehaviour
         // randomize given time
         RandomizeTime();
 
-        // reset atd tries and win tries
+        // reset atd tries
         _atdTries = 0;
-        _winTries = 0;
 
         // reset win button
         _wbImage.color = Color.white;
@@ -88,19 +84,8 @@ public class Level2Manager : MonoBehaviour
         UpdateDurum(Akrep.Instance.Hr, durumText);
     }
 
-    private void ResetHearts()
-    {
-        for (int i = 0; i < 3; i++)
-        {
-            GameObject heart = hearts.GetChild(i).gameObject;
-            heart.LeanScale(Vector3.one, .3f).setEaseOutBack();
-        }
-    }
-
     public void ButtonAnalogToDigital()
     {
-        if (_atdTries == 0) ResetHearts();
-
         // analog to digital
         AnalogToDigital();
 
@@ -129,16 +114,6 @@ public class Level2Manager : MonoBehaviour
             // wrong answer visuals
             StartCoroutine(GameManager.Instance.ColorChange(_wbImage, Color.white, Color.red, .25f, 0f));
             StartCoroutine(GameManager.Instance.Shake(_wbRectTransform, 4, .5f));
-
-            // get heart object and destroy it
-            GameObject heart = hearts.GetChild(_winTries).gameObject;
-            heart.LeanScale(Vector3.zero, .4f).setEaseOutBack();
-
-            // increment win tries
-            _winTries++;
-
-            // lose level if there are no hearts left
-            if (_winTries == 3) LoseGame();
         }
         ButtonHandler.Instance.AfterPress();
     }
@@ -150,12 +125,6 @@ public class Level2Manager : MonoBehaviour
         winPanel.SetActive(true);
 
         GameManager.Instance.LevelWon();
-    }
-
-    private void LoseGame()
-    {
-        lossPanel.transform.SetAsLastSibling();
-        lossPanel.SetActive(true);
     }
 
     private void SHEndgame(int enable)
