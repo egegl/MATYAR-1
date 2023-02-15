@@ -76,7 +76,7 @@ public class Akrep : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHan
     // reset rotation of pivot
     public void Reset()
     {
-        _pivot.rotation = Quaternion.identity;
+        _pivot.LeanRotateZ(0, .3f).setEaseOutBack();
         Hr = 0;
     }
 

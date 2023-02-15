@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using UnityEditor;
 
 public class Level2Manager : MonoBehaviour
 {
@@ -9,6 +10,8 @@ public class Level2Manager : MonoBehaviour
     private int _givenMin;
     private int _winTries;
     private int _atdTries;
+    private Image _wbImage;
+    private RectTransform _wbRectTransform;
 
     [SerializeField] private TextMeshProUGUI givenDigitalText;
     [SerializeField] private TextMeshProUGUI givenDurumText;
@@ -17,6 +20,9 @@ public class Level2Manager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI durumText;
     [SerializeField] private CanvasGroup endgame;
     [SerializeField] private Transform hearts;
+    [SerializeField] private GameObject winButton;
+    [SerializeField] private GameObject winPanel;
+    [SerializeField] private GameObject lossPanel;
 
     public static Level2Manager Instance { get; private set; }
 
@@ -24,6 +30,9 @@ public class Level2Manager : MonoBehaviour
     {
         // singleton
         Instance = this;
+
+        _wbImage = winButton.GetComponent<Image>();
+        _wbRectTransform = winButton.GetComponent<RectTransform>();
 
         ResetLevel();
     }
@@ -44,6 +53,12 @@ public class Level2Manager : MonoBehaviour
         // reset atd tries and win tries
         _atdTries = 0;
         _winTries = 0;
+
+        // reset win button
+        _wbImage.color = Color.white;
+
+        // reset win panel
+        winPanel.SetActive(false);
     }
 
     private void RandomizeTime()
@@ -100,22 +115,47 @@ public class Level2Manager : MonoBehaviour
 
     public void ButtonCheckWin()
     {
-        // get heart object and destroy it
-        GameObject heart = hearts.GetChild(_winTries).gameObject;
-        heart.LeanScale(Vector3.zero, .4f).setEaseOutBack();
+        // check win
+        if(givenDigitalText.text.Equals(analogToDigital.text))
+        {
+            // correct answer visuals
+            StartCoroutine(GameManager.Instance.ColorChange(_wbImage, Color.white, Color.green, .25f));
 
-        // increment win tries
-        _winTries++;
+            // win game
+            WinGame();
+        }
+        else
+        {
+            // wrong answer visuals
+            StartCoroutine(GameManager.Instance.ColorChange(_wbImage, Color.white, Color.red, .25f, 0f));
+            StartCoroutine(GameManager.Instance.Shake(_wbRectTransform, 4, .5f));
 
-        // lose level if there are no hearts left
-        if (_winTries == 3) LevelLost();
+            // get heart object and destroy it
+            GameObject heart = hearts.GetChild(_winTries).gameObject;
+            heart.LeanScale(Vector3.zero, .4f).setEaseOutBack();
 
+            // increment win tries
+            _winTries++;
+
+            // lose level if there are no hearts left
+            if (_winTries == 3) LoseGame();
+        }
         ButtonHandler.Instance.AfterPress();
     }
 
-    private void LevelLost()
+    // activate win panel
+    private void WinGame()
     {
-        throw new System.NotImplementedException();
+        winPanel.transform.SetAsLastSibling();
+        winPanel.SetActive(true);
+
+        GameManager.Instance.LevelWon();
+    }
+
+    private void LoseGame()
+    {
+        lossPanel.transform.SetAsLastSibling();
+        lossPanel.SetActive(true);
     }
 
     private void SHEndgame(int enable)
