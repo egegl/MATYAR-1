@@ -24,6 +24,9 @@ public class Yelkovan : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDrag
     {
         _cGroup.alpha = .6f;
         _z1 = _pivot.rotation.eulerAngles.z;
+
+        // hide win button
+        Level2Manager.Instance.HWinButton();
     }
 
     public void OnDrag(PointerEventData eventData)
@@ -52,6 +55,7 @@ public class Yelkovan : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDrag
     {
         // adjust feedback angle
         while (fbAngle < -360) fbAngle += 360;
+        while (fbAngle > 360) fbAngle -= 360;
 
         // calculate new angle
         float newAngle = _pivot.eulerAngles.z + fbAngle;

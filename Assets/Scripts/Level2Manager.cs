@@ -11,13 +11,13 @@ public class Level2Manager : MonoBehaviour
     private int _atdTries;
     private Image _wbImage;
     private RectTransform _wbRectTransform;
+    private CanvasGroup _wbCGroup;
 
     [SerializeField] private TextMeshProUGUI givenDigitalText;
     [SerializeField] private TextMeshProUGUI givenDurumText;
     [SerializeField] private TextMeshProUGUI analogToDigital;
     [SerializeField] private TextMeshProUGUI amPmText;
     [SerializeField] private TextMeshProUGUI durumText;
-    [SerializeField] private CanvasGroup endgame;
     [SerializeField] private GameObject winButton;
     [SerializeField] private GameObject winPanel;
 
@@ -30,6 +30,7 @@ public class Level2Manager : MonoBehaviour
 
         _wbImage = winButton.GetComponent<Image>();
         _wbRectTransform = winButton.GetComponent<RectTransform>();
+        _wbCGroup = winButton.GetComponent<CanvasGroup>();
 
         ResetLevel();
     }
@@ -41,17 +42,15 @@ public class Level2Manager : MonoBehaviour
         Yelkovan.Instance.Reset();
         Akrep.Instance.Reset();
 
-        // hide endgame
-        SHEndgame(0);
-
         // randomize given time
         RandomizeTime();
 
-        // reset atd tries
+        // reset atd
+        ResetATD();
         _atdTries = 0;
 
         // reset win button
-        _wbImage.color = Color.white;
+        HWinButton();
 
         // reset win panel
         winPanel.SetActive(false);
@@ -61,13 +60,19 @@ public class Level2Manager : MonoBehaviour
     {
         // assign random values to given hours and minute
         _givenHr = Random.Range(0, 24);
-        _givenMin = Random.Range(0, 60);
+        _givenMin = Random.Range(0, 12) * 5;
 
         // change the text of given digital clock
         givenDigitalText.text = FixClockHr(_givenHr) + ":" + FixClockMin(_givenMin);
 
         // update given durum text
         UpdateDurum(_givenHr, givenDurumText);
+    }
+
+    private void ResetATD()
+    {
+        analogToDigital.text = "00:00";
+        durumText.text = "";
     }
 
     // convert analog clock to digital
@@ -89,8 +94,8 @@ public class Level2Manager : MonoBehaviour
         // analog to digital
         AnalogToDigital();
 
-        // show endgame
-        SHEndgame(1);
+        // show win button
+        SWinButton();
 
         // increment atd tries
         _atdTries++;
@@ -127,16 +132,21 @@ public class Level2Manager : MonoBehaviour
         GameManager.Instance.LevelWon();
     }
 
-    private void SHEndgame(int enable)
+    private void SWinButton()
     {
-        bool interactable = false;
-        if (enable == 1) interactable = true;
+        // make win button interactable
+        _wbCGroup.interactable = true;
 
-        // make endgame un/interactable
-        endgame.interactable = interactable;
+        // show win button animation
+        _wbCGroup.LeanAlpha(1, .4f).setEaseOutQuad();
+    }
 
-        // show/hide endgame animation
-        endgame.LeanAlpha(enable, .4f).setEaseOutQuad();
+    // reset and hide win button
+    public void HWinButton()
+    {
+        _wbImage.color = Color.white;
+        _wbCGroup.interactable = false;
+        _wbCGroup.LeanAlpha(0, .3f).setEaseOutQuad();
     }
 
     // update durum text

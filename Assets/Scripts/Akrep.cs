@@ -25,6 +25,9 @@ public class Akrep : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHan
     {
         _cGroup.alpha = .6f;
         _z1 = _pivot.rotation.eulerAngles.z;
+
+        // hide win button
+        Level2Manager.Instance.HWinButton();
     }
 
     public void OnDrag(PointerEventData eventData)
