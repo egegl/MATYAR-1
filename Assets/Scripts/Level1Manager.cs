@@ -154,12 +154,12 @@ public class Level1Manager : MonoBehaviour
         }
     }
 
-    // activate win panel
+    // activate win panel, increment level 1 score
     private void WinGame()
     {
         winPanel.transform.SetAsLastSibling();
         winPanel.SetActive(true);
-        
-        GameManager.Instance.LevelWon();
+
+        PlayerPrefs.SetInt("0", PlayerPrefs.GetInt("0") + 1);
     }
 }

@@ -122,13 +122,12 @@ public class Level2Manager : MonoBehaviour
         ButtonHandler.Instance.AfterPress();
     }
 
-    // activate win panel
+    // activate win panel, increment level 2 score
     private void WinGame()
     {
         winPanel.transform.SetAsLastSibling();
         winPanel.SetActive(true);
-
-        GameManager.Instance.LevelWon();
+        PlayerPrefs.SetInt("1", PlayerPrefs.GetInt("1") + 1);
     }
 
     private void SWinButton()
