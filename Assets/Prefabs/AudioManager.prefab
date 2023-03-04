@@ -44,4 +44,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0d9ac20e34fe7da4cb8020ba4e12ea9e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sounds: []
+  sounds:
+  - <Name>k__BackingField: wrong
+    <Clip>k__BackingField: {fileID: 8300000, guid: ad41803fe7713094cb3bead135a9f1e9, type: 3}
+    <Volume>k__BackingField: 1
+    <Pitch>k__BackingField: 1
+    source: {fileID: 0}
+  - <Name>k__BackingField: win
+    <Clip>k__BackingField: {fileID: 8300000, guid: 6de51b1c580f9c040923241b7a5b47a5, type: 3}
+    <Volume>k__BackingField: 1
+    <Pitch>k__BackingField: 1
+    source: {fileID: 0}
+  - <Name>k__BackingField: button
+    <Clip>k__BackingField: {fileID: 8300000, guid: b39f6ee0541b523418014bcb25a27789, type: 3}
+    <Volume>k__BackingField: 0.5
+    <Pitch>k__BackingField: 1
+    source: {fileID: 0}

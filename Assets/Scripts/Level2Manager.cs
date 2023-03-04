@@ -37,6 +37,8 @@ public class Level2Manager : MonoBehaviour
     // reset level state
     public void ResetLevel()
     {
+        AudioManager.Instance.Play("button");
+
         // reset analog clock
         Yelkovan.Instance.Reset();
         Akrep.Instance.Reset();
@@ -81,7 +83,7 @@ public class Level2Manager : MonoBehaviour
         analogToDigital.text = analogToDigital.text.Substring(0, 3) + FixClockMin(Yelkovan.Instance.Min);
 
         // update hours
-        if (amPmText.text.Equals("Öğleden Önce")) Akrep.Instance.Hr += 12;
+        if (amPmText.text.Equals("Öğleden Önce") && Akrep.Instance.Hr < 12) Akrep.Instance.Hr += 12;
         analogToDigital.text = FixClockHr(Akrep.Instance.Hr) + analogToDigital.text.Substring(2);
 
         // update durum text
@@ -109,15 +111,16 @@ public class Level2Manager : MonoBehaviour
         {
             // correct answer visuals
             StartCoroutine(GameManager.Instance.ColorChange(_wbImage, Color.white, Color.green, .25f));
-
+            AudioManager.Instance.Play("win");
             // win game
             WinGame();
         }
         else
         {
             // wrong answer visuals
-            StartCoroutine(GameManager.Instance.ColorChange(_wbImage, Color.white, Color.red, .25f, 0f));
             StartCoroutine(GameManager.Instance.Shake(_wbRectTransform, 4, .5f));
+            StartCoroutine(GameManager.Instance.ColorChange(_wbImage, Color.white, Color.red, .25f, 0f));
+            return;
         }
         ButtonHandler.Instance.AfterPress();
     }

@@ -92,6 +92,7 @@ public class Level1Manager : MonoBehaviour
         }
         else
         {
+            AudioManager.Instance.Play("win");
             // correct answer visuals
             StartCoroutine(GameManager.Instance.ColorChange(_cbImage, Color.white, Color.green, .5f));
 
@@ -111,6 +112,7 @@ public class Level1Manager : MonoBehaviour
         if (int.TryParse(_input.text, out int result) && result == (_firstNum + _secondNum))
         {
             // correct answer visuals
+            AudioManager.Instance.Play("win");
             StartCoroutine(GameManager.Instance.ColorChange(_tbImage, Color.white, Color.green, .25f));
 
             // win game

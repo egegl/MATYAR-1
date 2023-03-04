@@ -37,8 +37,8 @@ public class ButtonHandler : MonoBehaviour
 
     public void AfterPress()
     {
-        // play click sound (not implemented)
-        //AudioManager.Instance.Play("ButtonClick");
+        // play click sound
+        AudioManager.Instance.Play("button");
 
         // unselect UI element
         EventSystem.current.SetSelectedGameObject(null);

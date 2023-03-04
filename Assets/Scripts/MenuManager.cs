@@ -47,7 +47,17 @@ public class MenuManager : MonoBehaviour
 
     public void ButtonSetPrefs(int set)
     {
-        PlayerPrefs.SetInt("2", set);
+        PlayerPrefs.SetInt("0", set);
         ScoresToStars();
+    }
+
+    public void QuitGame()
+    {
+        Application.Quit();
+    }
+
+    public void OnApplicationQuit()
+    {
+        PlayerPrefs.Save();
     }
 }

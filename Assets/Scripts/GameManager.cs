@@ -37,6 +37,7 @@ public class GameManager : MonoBehaviour
     // shake UI element
     public IEnumerator Shake(RectTransform rectTransform, float shakeAmount, float duration)
     {
+        AudioManager.Instance.Play("wrong");
         float t = 0;
         
         Vector3 startLocalPos = rectTransform.localPosition;
